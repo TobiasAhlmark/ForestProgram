@@ -1,4 +1,6 @@
 using ForestProgram.Models;
+using Microsoft.CodeAnalysis;
+using OOP1PROJEKT_TTA_CODERS.UI;
 
 namespace ForestProgram.UI;
 
@@ -20,8 +22,8 @@ public class SpeciesUI
         Console.WriteLine("3. Display Species");
         Console.WriteLine("4. Get information about a species");
 
-        if (int.TryParse(Console.ReadLine(), out int input))
-        {
+        int input = Utilities.GetValidIntInput("Enter Choice", "Use numbers, try again!");
+        
             switch (input)
             {
                 case 1:
@@ -41,7 +43,7 @@ public class SpeciesUI
                     Console.WriteLine("Use numbers betwen 1-4");
                     break;
             }
-        }
+        
     }
 
     public void AddSpecies()
