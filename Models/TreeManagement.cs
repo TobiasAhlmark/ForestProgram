@@ -17,7 +17,7 @@ public class TreeManagement
 
     public string? Action { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime? Date { get; set; }
 
     public string? Responsible { get; set; }
 
@@ -25,5 +25,5 @@ public class TreeManagement
 
     public string? Note { get; set; }
 
-    public DateOnly? FollowUp { get; set; }
+    public DateTime? FollowUp { get; set; }
 }
