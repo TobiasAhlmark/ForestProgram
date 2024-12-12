@@ -11,6 +11,12 @@ public class ForestAreaUI
     {
         _forestAreaService = forestAreaService;
     }
+
+    public void ForestAreaMenu()
+    {
+
+    }
+    
     public void AddForestArea()
     {
         

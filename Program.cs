@@ -2,15 +2,36 @@
 using ForestProgram.Models;
 using Microsoft.Extensions.Options;
 using ForestProgram.UI;
+using Microsoft.Extensions.DependencyInjection;
+using ForestProgram.Services;
 
 internal class Program
 {
     private static void Main()
     {
-        
-        ForestProgramDbContext _context = new ForestProgramDbContext();
-        MainMenu userInterface = new MainMenu(_context);
+        // Skapa en ny ServiceCollection
+        var serviceCollection = new ServiceCollection();
+
+        // Konfigurera tjänster
+        serviceCollection.AddSingleton<ForestProgramDbContext>();
+        serviceCollection.AddSingleton<SpeciesUI>();
+        serviceCollection.AddSingleton<TreeUI>();
+        serviceCollection.AddSingleton<EnviromentUI>();
+        serviceCollection.AddSingleton<ForestAreaUI>();
+        serviceCollection.AddSingleton<PlantingHistoryUI>();
+        serviceCollection.AddSingleton<DamageAndDiseaseUI>();
+        serviceCollection.AddSingleton<DamageRepairUI>();
+        serviceCollection.AddSingleton<TreeManagementUI>();
+        serviceCollection.AddSingleton<MainMenu>();
+        serviceCollection.AddSingleton<ForestAreaService>();
+        serviceCollection.AddSingleton<TreeManagementService>();
+        serviceCollection.AddSingleton<TreeService>();
+
+        // Bygg ServiceProvider
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        // Hämta MainMenu från DI-container
+        var userInterface = serviceProvider.GetRequiredService<MainMenu>();
         userInterface.MainMenuOptions();
-        
     }
 }

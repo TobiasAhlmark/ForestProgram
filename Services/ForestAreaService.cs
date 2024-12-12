@@ -14,6 +14,8 @@ public class ForestAreaService
     public OperationResult AddForestArea(ForestArea forestArea)
     {
         /*
+        SQL-kod:
+
         SELECT COUNT(*)
         FROM ForestAreas
         WHERE Location = @Location;
@@ -59,6 +61,7 @@ public class ForestAreaService
 
         /*
         SQL-kod:
+
         INSERT INTO ForestAreas (Location, ForestType, AreaSquareMeters, EcoSystem, Age)
         VALUES (@Location, @ForestType, @AreaSquareMeters, @EcoSystem, @Age);
         */
@@ -73,6 +76,11 @@ public class ForestAreaService
 
     }
 
+    /*
+    SQL-kod:
+    
+    SELECT * FROM ForestAreas;
+    */
     public List<ForestArea> GettAllForestAreas()
     {
         return _forestProgramContext.ForestAreas.ToList();
