@@ -1,5 +1,6 @@
 using ForestProgram.Models;
 using ForestProgram.Services;
+using Microsoft.CodeAnalysis.Operations;
 using Spectre.Console;
 
 namespace ForestProgram.UI;
@@ -25,60 +26,85 @@ public class TreeManagementUI
 
     public void ManagementMenu()
     {
-        Console.WriteLine("1. Add management");
-        Console.WriteLine("2. Update management");
-        Console.WriteLine("3. Show info about specifik management");
+        var menuOptions = new List<string>
+    {
+        "Add management",
+        "Update management",
+        "Show managements",
+        "Exit"
+    };
 
-        if (int.TryParse(Console.ReadLine(), out int input))
+        var selectedOption = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select an option")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(menuOptions)
+        );
+
+        switch (selectedOption)
         {
-            switch (input)
-            {
-                case 1:
-                    AddManagement();
-                    break;
-                case 2:
-                    UpdateManagement();
-                    break;
-                case 3:
-                    ShowInfoManagement();
-                    break;
-
-                default:
-                    Console.WriteLine("Use numbers betwen 1-3");
-                    break;
-            }
+            case "Add management":
+                AddManagement();
+                break;
+            case "Update management":
+                UpdateManagement();
+                break;
+            case "Show managements":
+                ShowInfoManagement();
+                break;
+            case "Exit":
+                Console.WriteLine("Exiting the program...");
+                break;
+            default:
+                Console.WriteLine("Invalid option selected.");
+                break;
         }
     }
 
     public void AddManagement()
     {
-        Console.WriteLine("Select action:");
-        Console.WriteLine("1. Logging");
-        Console.WriteLine("2. Thinning");
-        Console.WriteLine("3. Planting");
-        Console.WriteLine("4. Other (Enter manually)");
+        var menuOptions = new List<string>
+    {
+        "Logging",
+        "Thinning",
+        "Planting",
+        "Other (Enter manually)",
+        "Update management",
+        "Exit"
+    };
 
-        if (int.TryParse(Console.ReadLine(), out int choice))
+        var selectedOption = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select action")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(menuOptions)
+        );
+
+        switch (selectedOption)
         {
-            switch (choice)
-            {
-                case 1:
-                    Logging();
-                    break;
-                case 2:
-                    Thinning();
-                    break;
-                case 3:
-                    Planting();
-                    break;
-                case 4:
-                    EnterManually();
-                    break;
-
-                default:
-                    Console.WriteLine("Use numbers betwen 1-3");
-                    break;
-            }
+            case "Logging":
+                Logging();
+                break;
+            case "Thinning":
+                Thinning();
+                break;
+            case "Planting":
+                Planting();
+                break;
+            case "Other (Enter manually)":
+                EnterManually();
+                break;
+            case "Update management":
+                UpdateManagement();
+                break;
+            case "Exit":
+                Console.WriteLine("Exiting the program...");
+                break;
+            default:
+                Console.WriteLine("Invalid option selected.");
+                break;
         }
     }
 
@@ -88,15 +114,16 @@ public class TreeManagementUI
 
         treeManagement.Action = "Logging";
 
-        DateTime startdate = Utilities.GetValidDate("Startdate");
+        DateTime startdate = Utilities.GetValidDate("Startdate: ");
         treeManagement.Date = startdate;
 
-        string squareMeter = Utilities.GetString("Enter squaremeters", "Try again!");
+        string squareMeter = Utilities.GetString("Enter squaremeters: ", "Try again!");
         treeManagement.NumberOfTreesTreated = squareMeter;
 
-        string responsible = Utilities.GetString("Enter name of the person in charge of the action", "try again");
+        string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
         treeManagement.Responsible = responsible;
 
+        Console.WriteLine("Write note: ");
         string note = Console.ReadLine();
         treeManagement.Note = string.IsNullOrEmpty(note) ? "No note written." : note;
 
@@ -128,7 +155,7 @@ public class TreeManagementUI
 
             if (menuResult.Success)
             {
-                Console.WriteLine("Tree management added");
+                Console.WriteLine("Logging management added");
                 break;
             }
             else
@@ -144,15 +171,16 @@ public class TreeManagementUI
 
         treeManagement.Action = "Thinning";
 
-        DateTime startdate = Utilities.GetValidDate("Startdate");
+        DateTime startdate = Utilities.GetValidDate("Startdate: ");
         treeManagement.Date = startdate;
 
-        string squareMeter = Utilities.GetString("Enter squaremeters", "Try again!");
+        string squareMeter = Utilities.GetString("Enter squaremeters: ", "Try again!");
         treeManagement.NumberOfTreesTreated = squareMeter;
 
-        string responsible = Utilities.GetString("Enter name of the person in charge of the action", "try again");
+        string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
         treeManagement.Responsible = responsible;
 
+        Console.WriteLine("Write note: ");
         string note = Console.ReadLine();
         treeManagement.Note = string.IsNullOrEmpty(note) ? "No note written." : note;
 
@@ -184,7 +212,7 @@ public class TreeManagementUI
 
             if (menuResult.Success)
             {
-                Console.WriteLine("Tree management added");
+                Console.WriteLine("Thinning management added");
                 break;
             }
             else
@@ -200,41 +228,53 @@ public class TreeManagementUI
 
         treeManagement.Action = "Planting";
 
-        DateTime startdate = Utilities.GetValidDate("Startdate ");
+        DateTime startdate = Utilities.GetValidDate("Startdate: ");
         treeManagement.Date = startdate;
 
-        string squareMeter = Utilities.GetString("Enter squaremeters ", "Try again!");
+        string squareMeter = Utilities.GetString("Enter squaremeters: ", "Try again!");
         treeManagement.NumberOfTreesTreated = squareMeter;
 
-        string numberOfTrees = Utilities.GetString("Enter estimated number of plants ", "Try again!");
+        string numberOfTrees = Utilities.GetString("Enter estimated number of plants: ", "Try again!");
         treeManagement.NumberOfTreesTreated = numberOfTrees;
 
-        // Hämta alla arter
-        Console.WriteLine("Select species: ");
-        var speciesService = new SpeciesService(_forestProgramContext);
-        var speciesList = speciesService.GetAllSpecies();
+        while (true)
+        {
+            // Hämta alla arter
+            Console.WriteLine("Select species: ");
+            var speciesService = new SpeciesService(_forestProgramContext);
+            var speciesList = speciesService.GetAllSpecies();
 
-        // Presentera en lista med arter för användaren att välja från
-        var speciesNames = speciesList.Select(s => s.Name).ToList();
+            // Presentera en lista med arter för användaren att välja från
+            var speciesNames = speciesList.Select(s => s.Name).ToList();
+            speciesNames.Add("Exit");
 
-        
-        string selectedSpeciesName = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Choose a species to plant")
-                .PageSize(10)
-                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
-                .AddChoices(speciesNames)
-        );
 
-        //Hämtar den valda arten
-        var selectedSpecies = speciesService.GetSpeciesByName(selectedSpeciesName);
-        
-        treeManagement.SpeciesId =  
-        
-        string responsible = Utilities.GetString("Enter name of the person in charge of the action", "try again");
+            string selectedSpeciesName = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Choose a species to plant")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(speciesNames)
+            );
+            if (selectedSpeciesName.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Exiting the program...");
+                break;
+            }
+
+            //Hämtar den valda arten
+            var selectedSpecies = speciesService.GetSpeciesByName(selectedSpeciesName);
+
+            if (selectedSpecies.Success)
+            {
+                treeManagement.SpeciesId = selectedSpecies.Data.SpeciesId;
+            }
+        }
+
+        string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
         treeManagement.Responsible = responsible;
 
-        Console.WriteLine("Write a note:");
+        Console.WriteLine("Write a note: ");
         string note = Console.ReadLine();
         treeManagement.Note = string.IsNullOrEmpty(note) ? "No note written." : note;
 
@@ -266,7 +306,7 @@ public class TreeManagementUI
 
             if (menuResult.Success)
             {
-                Console.WriteLine("Tree management added");
+                Console.WriteLine($"Planting management added to location {menuResult.Data}");
                 break;
             }
             else
@@ -280,56 +320,184 @@ public class TreeManagementUI
     {
         TreeManagement treeManagement = new TreeManagement();
 
-        var forestAreas = _forestAreaService.GettAllForestAreas();
+        Console.WriteLine("Select location");
 
-        var areaLocations = forestAreas
-        .Select(area => area.Location)
-        .ToList();
-
-        var selectedLocation = AnsiConsole.Prompt(
-        new SelectionPrompt<string>()
-            .Title("Choose a Forest Area Location")
-            .PageSize(10)
-            .MoreChoicesText("[grey](Use arrow keys to select)[/]")
-            .AddChoices(areaLocations)
-        );
-
-        var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
-
-        if (menuResult.Success)
+        while (true)
         {
-            Console.Write("Enter what your action is: ");
-            treeManagement.Action = Console.ReadLine();
+            var forestAreas = _forestAreaService.GettAllForestAreas();
+
+            var areaLocations = forestAreas
+            .Select(area => area.Location)
+            .ToList();
+            areaLocations.Add("Exit");
+
+            var selectedLocation = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Choose a Forest Area Location")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(areaLocations)
+            );
+            if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Exiting the program...");
+                break;
+            }
+
+            string action = Utilities.GetString("Enter action: ", "Try again!");
+            treeManagement.Action = action;
+
+            DateTime startdate = Utilities.GetValidDate("Startdate: ");
+            treeManagement.Date = startdate;
+
+            string squareMeter = Utilities.GetString("Enter squaremeters or estimated number of trees: ", "Try again!");
+            treeManagement.NumberOfTreesTreated = squareMeter;
+
+            string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
+            treeManagement.Responsible = responsible;
+
+            Console.WriteLine("Write note: ");
+            string note = Console.ReadLine();
+            if (note == "")
+            {
+                treeManagement.Note = "No note written.";
+            }
+            treeManagement.Note = note;
+
+            var result = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+
+            if (result.Success)
+            {
+                Console.WriteLine($"Tree management added to location {result.Data}");
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Error, location {result.Data}");
+            }
         }
-        else
-        {
-            Console.WriteLine(menuResult.Message);
-        }
-
-        DateTime startdate = Utilities.GetValidDate("Startdate");
-        treeManagement.Date = startdate;
-
-        string squareMeter = Utilities.GetString("Enter squaremeters or estimated number of trees", "Try again!");
-        treeManagement.NumberOfTreesTreated = squareMeter;
-
-        string responsible = Utilities.GetString("Enter name of the person in charge of the action", "try again");
-        treeManagement.Responsible = responsible;
-
-        string note = Console.ReadLine();
-        if (note == "")
-        {
-            treeManagement.Note = "No note written.";
-        }
-        treeManagement.Note = note;
     }
 
     public void UpdateManagement()
     {
+        var manageMentResult = _treeManagementService.GetAllTreeManagements();
 
+        if (manageMentResult.Success)
+        {
+            // Skapa en lista med managements som ska visas i menyn
+            var managementOptions = manageMentResult.Data
+                .Select(tm => $"{tm.forestArea.Location} - {tm.Action}")
+                .ToList();
+
+            managementOptions.Add("Exit");
+
+            var selectedManagement = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Select management to update")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(managementOptions)
+            );
+            if (selectedManagement.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Exiting the program...");
+                return;
+            }
+
+            var selectedTreeManagement = manageMentResult.Data
+            .FirstOrDefault(tm => $"{tm.forestArea.Location} - {tm.Action}" == selectedManagement);
+
+            if (selectedTreeManagement != null)
+            {
+                var UpdateOptions = new List<string>
+                {
+                   "Number of trees",
+                   "Action",
+                   "StartDate",
+                   "Responsible",
+                   "Note",
+                   "Follow up",
+                   "Exit"
+                };
+
+                var selectedUpdate = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("Select option to update")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(UpdateOptions)
+                );
+                if (selectedUpdate.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Exiting the program...");
+                    return;
+                }
+
+                switch (selectedUpdate)
+                {
+                    case "Number of trees":
+                        Console.WriteLine($"Past info {selectedTreeManagement.NumberOfTreesTreated}");
+                        string numberOfTrees = Utilities.GetString("Enter updated number of trees: ", "Try Again!");
+                        selectedTreeManagement.NumberOfTreesTreated = numberOfTrees;
+                        break;
+                    case "Action":
+                        Console.WriteLine($"Past info {selectedTreeManagement.Action}");
+                        string action = Utilities.GetString("Enter updated actino: ", "Try Again!");
+                        selectedTreeManagement.Action = action;
+                        break;
+                    case "StartDate":
+                        Console.WriteLine($"Past info {selectedTreeManagement.Date}");
+                        DateTime startDate = Utilities.GetValidDate("Enter new startdate yyyy-MM-DD: ");
+                        selectedTreeManagement.Date = startDate;
+                        break;
+                    case "Responsible":
+                        Console.WriteLine($"Past info {selectedTreeManagement.Responsible}");
+                        string responsible = Utilities.GetString("Enter responsible: ", "Try again!");
+                        selectedTreeManagement.Responsible = responsible;
+                        break;
+                    case "Note":
+                        Console.WriteLine($"Past info {selectedTreeManagement.Note}");
+                        string note = Utilities.GetString("Enter note: ", "Try Again!");
+                        selectedTreeManagement.Note = note;
+                        break;
+                    case "Follow up":
+                        Console.WriteLine($"Past info {selectedTreeManagement.FollowUp}");
+                        DateTime followUp = Utilities.GetValidDate("Enter follow up date yyyy-MM-dd: ");
+                        selectedTreeManagement.FollowUp = followUp;
+                        break;
+
+                    default:
+                        Console.WriteLine("");
+                        break;
+                }
+                var updatedResult = _treeManagementService.UpDateTreeManageMent(selectedTreeManagement);
+
+                if (updatedResult.Success)
+                {
+                    Console.WriteLine($"{updatedResult.Message}");
+                }
+                else
+                {
+                    Console.WriteLine($"Failed updated {updatedResult.Data}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No Tree management found!");
+            }
+        }
     }
 
     public void ShowInfoManagement()
     {
+        var showTreeManagement = _treeManagementService.GetAllTreeManagements();
 
+        if (showTreeManagement.Success)
+        {
+            foreach (var info in showTreeManagement.Data)
+            {
+                Console.WriteLine($"{info.forestArea.Location}\n{info.Action}\n{info.Date}\n{info.Responsible}\n{info.Note}\n{info.NumberOfTreesTreated}\n--------------");
+            }
+        }
     }
 }

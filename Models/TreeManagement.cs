@@ -26,4 +26,6 @@ public partial class TreeManagement
     public string? Note { get; set; }
 
     public DateTime? FollowUp { get; set; }
+
+    public ForestArea forestArea { get; set; }
 }

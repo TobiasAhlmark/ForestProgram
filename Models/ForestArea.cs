@@ -6,7 +6,7 @@ public partial class ForestArea
 {
     public int ForestAreaId { get; set; }
 
-    public string ForestType { get; set; } = null!;
+    public string ForestType { get; set; } = null;
 
     public string? AreaSquareMeters { get; set; }
 

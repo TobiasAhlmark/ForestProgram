@@ -29,7 +29,7 @@ public class SpeciesService
         }
         return new OperationResult<Species>
             {
-                Success = false,
+                Success = true,
                 Message = "Species name found",
                 Data = species
             };

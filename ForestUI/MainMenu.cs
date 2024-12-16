@@ -59,7 +59,7 @@ public class MainMenu
             var selection = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("[bold blue]=== Main Menu ===[/]\nSelect an option using [green]arrow keys[/]:")
-                    .PageSize(10) // Max antal val som visas samtidigt
+                    .PageSize(10) 
                     .AddChoices(menuItems)
             );
 
@@ -102,7 +102,5 @@ public class MainMenu
                 break;
             }
         }
-        _speciesUI.SpeciesMenu();
     }
-
 }
