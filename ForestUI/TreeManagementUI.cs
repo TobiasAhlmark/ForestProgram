@@ -1,6 +1,5 @@
 using ForestProgram.Models;
 using ForestProgram.Services;
-using Microsoft.CodeAnalysis.Operations;
 using Spectre.Console;
 
 namespace ForestProgram.UI;
@@ -386,7 +385,7 @@ public class TreeManagementUI
         {
             // Skapa en lista med managements som ska visas i menyn
             var managementOptions = manageMentResult.Data
-                .Select(tm => $"{tm.forestArea.Location} - {tm.Action}")
+                .Select(tm => $"{tm.ForestArea.Location} - {tm.Action}")
                 .ToList();
 
             managementOptions.Add("Exit");
@@ -405,13 +404,14 @@ public class TreeManagementUI
             }
 
             var selectedTreeManagement = manageMentResult.Data
-            .FirstOrDefault(tm => $"{tm.forestArea.Location} - {tm.Action}" == selectedManagement);
+            .FirstOrDefault(tm => $"{tm.ForestArea.Location} - {tm.Action}" == selectedManagement);
 
             if (selectedTreeManagement != null)
             {
                 var UpdateOptions = new List<string>
                 {
                    "Number of trees",
+                   "Species",
                    "Action",
                    "StartDate",
                    "Responsible",
@@ -439,6 +439,39 @@ public class TreeManagementUI
                         Console.WriteLine($"Past info {selectedTreeManagement.NumberOfTreesTreated}");
                         string numberOfTrees = Utilities.GetString("Enter updated number of trees: ", "Try Again!");
                         selectedTreeManagement.NumberOfTreesTreated = numberOfTrees;
+                        break;
+                    case "Species":
+                        Console.WriteLine($"Past info {selectedTreeManagement.Species.Name}");
+                        var speciesList = _forestProgramContext.Species.ToList();
+                        var speciesOptions = speciesList
+                        .Select(s => s.Name)
+                        .ToList();
+                        speciesOptions.Add("Exit");
+
+                        var selectedSpecies = AnsiConsole.Prompt(
+                        new SelectionPrompt<string>()
+                            .Title("Select species")
+                            .PageSize(10) // Antal alternativ som visas åt gången
+                            .MoreChoicesText("[grey](Use arrow keys to scroll)[/]")
+                            .AddChoices(speciesOptions)
+                        );
+                        if (selectedSpecies.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Console.WriteLine("Exiting species selection...");
+                            break;
+                        }
+
+                        var selectedSpeciesName = speciesList.FirstOrDefault(s => s.Name == selectedSpecies);
+
+                        if (selectedSpecies != null)
+                        {
+                            selectedTreeManagement.Species = selectedSpeciesName;
+                            Console.WriteLine($"Species updated to: {selectedSpeciesName.Name}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Species not found.");
+                        }
                         break;
                     case "Action":
                         Console.WriteLine($"Past info {selectedTreeManagement.Action}");
@@ -496,8 +529,21 @@ public class TreeManagementUI
         {
             foreach (var info in showTreeManagement.Data)
             {
-                Console.WriteLine($"{info.forestArea.Location}\n{info.Action}\n{info.Date}\n{info.Responsible}\n{info.Note}\n{info.NumberOfTreesTreated}\n--------------");
+                // Hantera null-värden med null-conditionals och defaultvärden
+                var location = info.ForestArea?.Location ?? "Unknown location";
+                var speciesName = info.Species?.Name ?? "Unknown species";
+                var action = info.Action ?? "No action specified";
+                var date = info.Date?.ToString("yyyy-MM-dd") ?? "No date specified";
+                var responsible = info.Responsible ?? "No responsible person";
+                var note = info.Note ?? "No notes";
+                var numberOfTrees = info.NumberOfTreesTreated ?? "No trees treated";
+
+                Console.WriteLine($"{location}\n{action}\n{date}\n{responsible}\n{note}\n{speciesName}\n{numberOfTrees}\n--------------");
             }
+        }
+        else
+        {
+            Console.WriteLine(showTreeManagement.Message);
         }
     }
 }

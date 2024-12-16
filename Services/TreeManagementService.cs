@@ -46,10 +46,11 @@ public class TreeManagementService
     public OperationResult<List<TreeManagement>> GetAllTreeManagements()
     {
         var treemanagement = _forestProgramContext.TreeManagements
-        .Include(tm => tm.forestArea)
+        .Include(tm => tm.ForestArea)
+        .Include(tm => tm.Species)
         .ToList();
 
-        if (treemanagement == null)
+        if (treemanagement == null || !treemanagement.Any())
         {
             return new OperationResult<List<TreeManagement>>
             {

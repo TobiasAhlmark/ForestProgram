@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace ForestProgram.Models;
 
 public partial class TreeManagement
@@ -27,5 +25,6 @@ public partial class TreeManagement
 
     public DateTime? FollowUp { get; set; }
 
-    public ForestArea forestArea { get; set; }
+    public ForestArea ForestArea { get; set; }
+    public Species Species { get; set; }
 }
