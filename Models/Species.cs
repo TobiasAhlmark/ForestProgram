@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ForestProgram.Models;
 
-public class Species
+public partial class Species
 {
     public int SpeciesId { get; set; }
 

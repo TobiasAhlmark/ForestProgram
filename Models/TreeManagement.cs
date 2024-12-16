@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ForestProgram.Models;
 
-public class TreeManagement
+public partial class TreeManagement
 {
     public int TreeManagementId { get; set; }
 
-    public int ForestAreId { get; set; }
+    public int ForestAreaId { get; set; }
 
     public int? TreeId { get; set; }
 

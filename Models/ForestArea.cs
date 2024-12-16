@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 
 namespace ForestProgram.Models;
 
 public partial class ForestArea
 {
-    public int ForestAreId { get; set; }
+    public int ForestAreaId { get; set; }
 
-    public string ForestType { get; set; }
+    public string ForestType { get; set; } = null!;
 
     public string? AreaSquareMeters { get; set; }
 

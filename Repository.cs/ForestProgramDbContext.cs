@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace ForestProgram.Models;
@@ -32,10 +31,17 @@ public partial class ForestProgramDbContext : DbContext
 
     public virtual DbSet<TreeManagement> TreeManagements { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    
-    => optionsBuilder.UseSqlServer(connectionstring);
+    static void LogWithColor(string output)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine(output);
+        Console.ResetColor();
+    }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(connectionstring).EnableSensitiveDataLogging(true).LogTo(LogWithColor, LogLevel.Information);
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<DamageAndDisease>(entity =>
@@ -115,11 +121,11 @@ public partial class ForestProgramDbContext : DbContext
 
         modelBuilder.Entity<ForestArea>(entity =>
         {
-            entity.HasKey(e => e.ForestAreId).HasName("PK_ForestAreaID");
+            entity.HasKey(e => e.ForestAreaId).HasName("PK_ForestAreaID");
 
             entity.ToTable("ForestArea");
 
-            entity.Property(e => e.ForestAreId).HasColumnName("ForestAreID");
+            entity.Property(e => e.ForestAreaId).HasColumnName("ForestAreaID");
             entity.Property(e => e.AreaSquareMeters)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -177,10 +183,10 @@ public partial class ForestProgramDbContext : DbContext
             entity.ToTable("Tree");
 
             entity.Property(e => e.TreeId).HasColumnName("TreeID");
-            entity.Property(e => e.ForestAreId)
+            entity.Property(e => e.ForestAreaId)
                 .HasMaxLength(10)
                 .IsFixedLength()
-                .HasColumnName("ForestAreID");
+                .HasColumnName("ForestAreaID");
             entity.Property(e => e.Health)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -202,7 +208,7 @@ public partial class ForestProgramDbContext : DbContext
 
             entity.Property(e => e.TreeManagementId).HasColumnName("TreeManagementID");
             entity.Property(e => e.Action).IsUnicode(false);
-            entity.Property(e => e.ForestAreId).HasColumnName("ForestAreID");
+            entity.Property(e => e.ForestAreaId).HasColumnName("ForestAreaID");
             entity.Property(e => e.Method).IsUnicode(false);
             entity.Property(e => e.Note).IsUnicode(false);
             entity.Property(e => e.NumberOfTreesTreated).IsUnicode(false);

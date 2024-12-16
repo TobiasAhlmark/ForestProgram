@@ -11,19 +11,12 @@ public class ForestAreaService
     {
         _forestProgramContext = forestProgramDbContext;
     }
-    public OperationResult AddForestArea(ForestArea forestArea)
+    public OperationResult<ForestArea> AddForestArea(ForestArea forestArea)
     {
-        /*
-        SQL-kod:
-
-        SELECT COUNT(*)
-        FROM ForestAreas
-        WHERE Location = @Location;
-        */
         var existingForestArea = _forestProgramContext.ForestAreas.FirstOrDefault(f => f.Location == forestArea.Location);
         if (existingForestArea == null)
         {
-            return new OperationResult
+            return new OperationResult<ForestArea>
             {
                 Success = false,
                 Message = $"A forest area with location '{forestArea.Location}' does not exists."
@@ -34,7 +27,7 @@ public class ForestAreaService
         {
             if (squareMeter < 1000)
             {
-                return new OperationResult
+                return new OperationResult<ForestArea>
                 {
                     Success = false,
                     Message = $"Squaremeter to low, need to be atleast 1000 squaremeter."
@@ -43,7 +36,7 @@ public class ForestAreaService
         }
         else
         {
-            return new OperationResult
+            return new OperationResult<ForestArea>
             {
                 Success = false,
                 Message = $"Invalid square meter value"
@@ -52,23 +45,17 @@ public class ForestAreaService
 
         if (forestArea.Age > 300)
         {
-            return new OperationResult
+            return new OperationResult<ForestArea>
             {
                 Success = false,
                 Message = $"This forrest seems a little bit to old"
             };
         }
 
-        /*
-        SQL-kod:
-
-        INSERT INTO ForestAreas (Location, ForestType, AreaSquareMeters, EcoSystem, Age)
-        VALUES (@Location, @ForestType, @AreaSquareMeters, @EcoSystem, @Age);
-        */
         _forestProgramContext.ForestAreas.Add(forestArea);
         _forestProgramContext.SaveChanges();
 
-        return new OperationResult
+        return new OperationResult<ForestArea>
         {
             Success = true,
             Message = $"{forestArea.Location} Logging added!"
@@ -76,11 +63,6 @@ public class ForestAreaService
 
     }
 
-    /*
-    SQL-kod:
-    
-    SELECT * FROM ForestAreas;
-    */
     public List<ForestArea> GettAllForestAreas()
     {
         return _forestProgramContext.ForestAreas.ToList();

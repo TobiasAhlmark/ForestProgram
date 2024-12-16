@@ -8,6 +8,7 @@ public class SpeciesUI
 
     private readonly TreeService _treeService;
     private readonly ForestProgramDbContext _forestProgramContext;
+    private readonly SpeciesService _speciesService;
 
     public SpeciesUI(ForestProgramDbContext context)
     {
@@ -68,8 +69,21 @@ public class SpeciesUI
                 Adaptation = adaptation
             };
 
-            _forestProgramContext.Add(species1);
-            _forestProgramContext.SaveChanges();
+            var result = _speciesService.GetSpeciesByName(species1.Name);
+
+            if (result.Success)
+            {
+                Console.WriteLine($"{result.Message} {result.Data.Name}");
+            }
+            else if (!result.Success)
+            {
+                Console.WriteLine($"{result.Message} {result.Data.Name}");
+                Console.WriteLine("Du återgår till main menu!");
+                break;
+            }
+
+            _speciesService.AddSpecies(species1);
+
             Console.WriteLine($"{species} tillagd!");
             Console.WriteLine("Lägg till ny art (1) Återgå till meny (0)");
             if (int.TryParse(Console.ReadLine(), out int input))
