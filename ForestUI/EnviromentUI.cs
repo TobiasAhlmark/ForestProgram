@@ -54,12 +54,7 @@ public class EnviromentUI
         }
     }
 
-    private void DeleteEnvironmentPrompt()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void UpdateEnvironmentPrompt()
+    private void AddEnvironmentPrompt()
     {
         throw new NotImplementedException();
     }
@@ -69,7 +64,12 @@ public class EnviromentUI
         throw new NotImplementedException();
     }
 
-    private void AddEnvironmentPrompt()
+    private void UpdateEnvironmentPrompt()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void DeleteEnvironmentPrompt()
     {
         throw new NotImplementedException();
     }
