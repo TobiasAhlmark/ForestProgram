@@ -9,9 +9,24 @@ public class SpeciesService
         _dbContext = dbContext;
     }
    
-    public List<Species> GetAllSpecies()
+    public OperationResult<List<Species>> GetAllSpecies()
     {
-        return _dbContext.Species.ToList(); 
+        var species = _dbContext.Species.ToList();
+
+        if (species == null || !species.Any())
+        {
+            return new OperationResult<List<Species>>
+            {
+                Success = false,
+                Message = "No species where found"
+            };
+        }
+        return new OperationResult<List<Species>>
+        {
+            Success = true,
+            Message = "Succes!",
+            Data = species
+        };
     }
 
     public OperationResult<Species> GetSpeciesByName(string name)
@@ -49,5 +64,33 @@ public class SpeciesService
                 Message = "Species name not found",
                 Data = null
             };
+    }
+
+    public OperationResult<Species> UpdateSpecies(Species species)
+    {
+        var Update = _dbContext.Species
+        .FirstOrDefault(s => s.SpeciesId == species.SpeciesId);
+
+        if(Update == null)
+        {
+            return new OperationResult<Species>
+            {
+                Success = false,
+                Message = "Could not update Species"
+            };
+        }
+        Update.Name = species.Name;
+        Update.Adaptation = species.Adaptation;
+        Update.LifeSpan = species.LifeSpan;
+        Update.Type = species.Type;
+
+        _dbContext.SaveChanges();
+
+        return new OperationResult<Species>
+        {
+            Success = true,
+            Message = "Species updated!",
+            Data = species
+        };
     }
 }

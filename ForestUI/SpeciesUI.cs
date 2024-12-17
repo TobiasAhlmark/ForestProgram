@@ -1,56 +1,56 @@
 using ForestProgram.Models;
 using Microsoft.CodeAnalysis;
-using ForestProgram.Services;
+using Spectre.Console;
 
 namespace ForestProgram.UI;
 
 public class SpeciesUI
 {
-
-    private readonly TreeService _treeService;
-    private readonly ForestProgramDbContext _forestProgramContext;
     private readonly SpeciesService _speciesService;
 
     public SpeciesUI
     (
-        ForestProgramDbContext context,
-        SpeciesService speciesService,
-        TreeService treeService
+        SpeciesService speciesService
     )
     {
-        _forestProgramContext = context;
         _speciesService = speciesService;
-        _treeService = treeService;
     }
     public void SpeciesMenu()
     {
-        Console.WriteLine("Species Menu");
-        Console.WriteLine("1. Add Species ");
-        Console.WriteLine("2. Update Species ");
-        Console.WriteLine("3. Display Species ");
-        Console.WriteLine("4. Get information about a species");
+        var menuOptions = new List<string>
+    {
+        "Add Species",
+        "Update Species",
+        "Display Species",
+        "Exit"
+    };
 
-        int input = Utilities.GetValidIntInput("Enter Choice: ", "Use numbers, try again!");
-        
-            switch (input)
-            {
-                case 1:
-                    AddSpecies();
-                    break;
-                case 2:
-                    UpdateSpecies();
-                    break;
-                case 3:
-                    DisplaySpecies();
-                    break;
-                case 4:
-                    GetInfoSpecies();
-                    break;
+        var selectedOption = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select an option from the Species Menu")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(menuOptions)
+        );
 
-                default:
-                    Console.WriteLine("Use numbers betwen 1-4");
-                    break;
-            }
+        switch (selectedOption)
+        {
+            case "Add Species":
+                AddSpecies();
+                break;
+            case "Update Species":
+                UpdateSpecies();
+                break;
+            case "Display Species":
+                DisplaySpecies();
+                break;
+            case "Exit":
+                Console.WriteLine("Exiting the Species Menu...");
+                break;
+            default:
+                Console.WriteLine("Invalid option selected.");
+                break;
+        }
     }
 
     public void AddSpecies()
@@ -60,9 +60,9 @@ public class SpeciesUI
         {
             Species addSpecies = new();
             Console.WriteLine("Add Species");
-           
+
             string species = Utilities.GetString("Enter species name: ", "Try again!");
-            
+
             var result = _speciesService.GetSpeciesByName(species);
 
             if (result.Success)
@@ -100,21 +100,179 @@ public class SpeciesUI
 
     public void UpdateSpecies()
     {
+        var speciesList = _speciesService.GetAllSpecies();
 
+        if (speciesList.Success)
+        {
+            var speciesOptions = speciesList.Data
+            .Select(s => s.Name)
+            .ToList();
+
+            speciesOptions.Add("Exit");
+
+            var selectedSpecies = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select a species to update")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(speciesOptions)
+        );
+
+            if (selectedSpecies.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Exiting the program...");
+                return;
+            }
+
+            var handleSpecie = speciesList.Data
+            .FirstOrDefault(s => s.Name == selectedSpecies);
+
+            HandleUpdateSpecies(handleSpecie);
+
+        }
+        else
+        {
+            Console.WriteLine("No species where found!");
+        }
+    }
+
+    public void HandleUpdateSpecies(Species species)
+    {
+        if (species == null)
+        {
+            Console.WriteLine("Species not found!");
+            return;
+        }
+
+        var updateOptions = new List<string>
+    {
+        "Name",
+        "Type",
+        "LifeSpan",
+        "Adaptation",
+        "Exit"
+    };
+
+        var selectedOption = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select what you want to update")
+                .PageSize(5)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(updateOptions)
+        );
+
+        switch (selectedOption)
+        {
+            case "Name":
+                Console.WriteLine($"Past info {species.Name}");
+                string newName = Utilities.GetString("Enter new name: ", "Try again!");
+                species.Name = newName;
+                break;
+
+            case "Type":
+                Console.WriteLine($"Past info {species.Type}");
+                string newType = Utilities.GetString("Enter new typ: ", "Try again!");
+                species.Type = newType;
+                break;
+
+            case "LifeSpan":
+                Console.WriteLine($"Past info {species.LifeSpan}");
+                string newLifespan = Utilities.GetString("Enter new lifespan: ", "Try again!");
+                species.LifeSpan = newLifespan;
+                break;
+
+            case "Adaptation":
+                Console.WriteLine($"Past info {species.Adaptation}");
+                string newAdaptation = Utilities.GetString("Enter new adaptation: ", "Try again!");
+                species.Adaptation = newAdaptation;
+                break;
+
+            case "Exit":
+                Console.WriteLine("Exiting update menu...");
+                break;
+
+            default:
+                Console.WriteLine("Invalid selection. No changes made.");
+                break;
+        }
+        var updateSelectedSpecies = _speciesService.UpdateSpecies(species);
     }
 
     public void DisplaySpecies()
     {
-        Console.WriteLine("Sök efter Art");
-        string searchSpecies = Console.ReadLine();
-        var species = _forestProgramContext.Species.FirstOrDefault(s => s.Name.ToLower() == searchSpecies.ToLower());
+        var menuOptions = new List<string>
+    {
+        "Show all species",
+        "Search for a specific species",
+        "Exit"
+    };
 
-        Console.WriteLine($"{species.Name}, {species.LifeSpan}, {species.Adaptation}");
+        var selectedOption = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("What do you want to do?")
+                .PageSize(5)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(menuOptions)
+        );
+
+        switch (selectedOption)
+        {
+            case "Show all species":
+                ShowAllSpecies();
+                break;
+
+            case "Search for a specific species":
+                SearchForSpecies();
+                break;
+
+            case "Exit":
+                Console.WriteLine("Exiting the program...");
+                return;
+
+            default:
+                Console.WriteLine("Invalid selection. Please try again.");
+                break;
+        }
     }
 
-    public void GetInfoSpecies()
+    public void ShowAllSpecies()
     {
-        
+        var speciesList = _speciesService.GetAllSpecies();
+        if (!speciesList.Success)
+        {
+            Console.WriteLine(speciesList.Message);
+        }
+        Console.WriteLine("\n--- All Species ---");
+
+        Console.WriteLine("{0,-20} {1,-15} {2,-10}", "Name", "Life Span", "Type");
+        Console.WriteLine(new string('-', 50)); // Separator
+
+        // Skriv ut varje art i tabellformat
+        foreach (var species in speciesList.Data)
+        {
+            Console.WriteLine(
+                "{0,-20} {1,-15} {2,-10}",
+                species.Name,               // Justeras till vänster, max 20 tecken
+                species.LifeSpan,          // Justeras till vänster, max 15 tecken
+                species.Type               // Justeras till vänster, max 10 tecken
+            );
+        }
+    }
+
+    public void SearchForSpecies()
+    {
+        string searchSpecies = Utilities.GetString("Search for species by name: ", "Try again!");
+        var species = _speciesService.GetSpeciesByName(searchSpecies);
+
+        if(!species.Success)
+        {
+           Console.WriteLine(species.Message);
+        }
+
+        Console.WriteLine(species.Data.Name);
+        Console.WriteLine(species.Data.LifeSpan);
+        Console.WriteLine(species.Data.Type);
+        Console.WriteLine(species.Data.Adaptation);
     }
 
 }

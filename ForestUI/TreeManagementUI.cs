@@ -244,7 +244,9 @@ public class TreeManagementUI
             var speciesList = speciesService.GetAllSpecies();
 
             // Presentera en lista med arter för användaren att välja från
-            var speciesNames = speciesList.Select(s => s.Name).ToList();
+            var speciesNames = speciesList.Data
+            .Select(s => s.Name)
+            .ToList();
             speciesNames.Add("Exit");
 
 
@@ -440,6 +442,7 @@ public class TreeManagementUI
                         string numberOfTrees = Utilities.GetString("Enter updated number of trees: ", "Try Again!");
                         selectedTreeManagement.NumberOfTreesTreated = numberOfTrees;
                         break;
+
                     case "Species":
                         Console.WriteLine($"Past info {selectedTreeManagement.Species.Name}");
                         var speciesList = _forestProgramContext.Species.ToList();
@@ -473,26 +476,31 @@ public class TreeManagementUI
                             Console.WriteLine("Species not found.");
                         }
                         break;
+
                     case "Action":
                         Console.WriteLine($"Past info {selectedTreeManagement.Action}");
                         string action = Utilities.GetString("Enter updated actino: ", "Try Again!");
                         selectedTreeManagement.Action = action;
                         break;
+
                     case "StartDate":
                         Console.WriteLine($"Past info {selectedTreeManagement.Date}");
                         DateTime startDate = Utilities.GetValidDate("Enter new startdate yyyy-MM-DD: ");
                         selectedTreeManagement.Date = startDate;
                         break;
+
                     case "Responsible":
                         Console.WriteLine($"Past info {selectedTreeManagement.Responsible}");
                         string responsible = Utilities.GetString("Enter responsible: ", "Try again!");
                         selectedTreeManagement.Responsible = responsible;
                         break;
+
                     case "Note":
                         Console.WriteLine($"Past info {selectedTreeManagement.Note}");
                         string note = Utilities.GetString("Enter note: ", "Try Again!");
                         selectedTreeManagement.Note = note;
                         break;
+
                     case "Follow up":
                         Console.WriteLine($"Past info {selectedTreeManagement.FollowUp}");
                         DateTime followUp = Utilities.GetValidDate("Enter follow up date yyyy-MM-dd: ");
