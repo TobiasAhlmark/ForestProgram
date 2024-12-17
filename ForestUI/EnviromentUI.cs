@@ -54,4 +54,23 @@ public class EnviromentUI
         }
     }
 
+    private void DeleteEnvironmentPrompt()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void UpdateEnvironmentPrompt()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void ViewEnvironmentsPrompt()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void AddEnvironmentPrompt()
+    {
+        throw new NotImplementedException();
+    }
 }
