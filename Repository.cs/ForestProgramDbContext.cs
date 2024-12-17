@@ -117,6 +117,11 @@ public partial class ForestProgramDbContext : DbContext
             entity.Property(e => e.Wind)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.HasOne(e => e.forestArea) // Navigation property i Enviroment
+                .WithMany(fa => fa.Enviroments) // Navigation property i ForestArea
+                .HasForeignKey(e => e.ForestAreaId) // Foreign key i Enviroment
+                .HasConstraintName("FK_Enviroment_ForestArea")
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<ForestArea>(entity =>
@@ -218,6 +223,8 @@ public partial class ForestProgramDbContext : DbContext
             entity.Property(e => e.SpeciesId).HasColumnName("SpeciesID");
             entity.Property(e => e.TreeId).HasColumnName("TreeID");
         });
+
+
 
         OnModelCreatingPartial(modelBuilder);
     }

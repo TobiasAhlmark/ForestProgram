@@ -15,4 +15,6 @@ public partial class ForestArea
     public string? Location { get; set; }
 
     public string? EcoSystem { get; set; }
+
+    public ICollection<Enviroment> Enviroments { get; set; } = new List<Enviroment>();
 }

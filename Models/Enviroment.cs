@@ -18,4 +18,6 @@ public partial class Enviroment
     public string? Wind { get; set; }
 
     public string? Altitude { get; set; }
+
+    public ForestArea forestArea { get; set; }
 }

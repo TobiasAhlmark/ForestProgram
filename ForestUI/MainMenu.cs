@@ -69,7 +69,7 @@ public class MainMenu
                     _treeManagementUI.ManagementMenu();
                     break;
                 case "Environment Settings":
-                    _enviromentUI.EnviromentMenu();
+                    _enviromentUI.EnvironmentMenu();
                     break;
                 case "Species Overview":
                     _speciesUI.SpeciesMenu();

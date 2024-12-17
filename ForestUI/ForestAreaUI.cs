@@ -14,6 +14,27 @@ public class ForestAreaUI
 
     public void ForestAreaMenu()
     {
+        var forestareas = _forestAreaService.GetForestAreaWithEnviroment();
+
+        if(forestareas.Success)
+        {
+             foreach (var forestArea in forestareas.Data)
+        {
+            Console.WriteLine($"Forest Area: {forestArea.ForestAreaId} - {forestArea.Location}");
+
+            if (forestArea.Enviroments.Any())
+            {
+                foreach (var env in forestArea.Enviroments)
+                {
+                    Console.WriteLine($"  Temperature: {env.Temperature}, Precipitation: {env.Precipitation}mm, Wind: {env.Wind} m/s, Altitude: {env.Altitude}m");
+                }
+            }
+            else
+            {
+                Console.WriteLine("  No environment data available.");
+            }
+        }
+        }
 
     }
     

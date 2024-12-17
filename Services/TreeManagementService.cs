@@ -20,27 +20,36 @@ public class TreeManagementService
     {
         var forestAreas = _forestAreaService.GettAllForestAreas();
 
-        var selectedForestArea = forestAreas.FirstOrDefault(area => area.Location == location);
-
-        if (selectedForestArea == null)
+        if (forestAreas.Success)
         {
+            var selectedForestArea = forestAreas.Data.FirstOrDefault(area => area.Location == location);
+
+            if (selectedForestArea == null)
+            {
+                return new OperationResult<TreeManagement>
+                {
+                    Success = false,
+                    Message = "Forest not found",
+                };
+            }
+
+            treeManagement.ForestAreaId = selectedForestArea.ForestAreaId;
+
+            _forestProgramContext.TreeManagements.Add(treeManagement);
+            _forestProgramContext.SaveChanges();
+
+            return new OperationResult<TreeManagement>
+            {
+                Success = true,
+                Message = $"You picked {selectedForestArea.Location}"
+            };
+        }
+        else
             return new OperationResult<TreeManagement>
             {
                 Success = false,
                 Message = "Forest not found",
             };
-        }
-
-        treeManagement.ForestAreaId = selectedForestArea.ForestAreaId;
-
-        _forestProgramContext.TreeManagements.Add(treeManagement);
-        _forestProgramContext.SaveChanges();
-
-        return new OperationResult<TreeManagement>
-        {
-            Success = true,
-            Message = $"You picked {selectedForestArea.Location}"
-        };
     }
 
     public OperationResult<List<TreeManagement>> GetAllTreeManagements()

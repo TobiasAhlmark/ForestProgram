@@ -130,36 +130,39 @@ public class TreeManagementUI
         {
             var forestAreas = _forestAreaService.GettAllForestAreas();
 
-            var areaLocations = forestAreas
-            .Select(area => area.Location)
-            .ToList();
-
-            areaLocations.Add("Exit");
-
-            var selectedLocation = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Choose a Forest Area Location")
-                .PageSize(10)
-                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
-                .AddChoices(areaLocations)
-            );
-
-            if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            if (forestAreas.Success)
             {
-                Console.WriteLine("Exiting the program...");
-                break;
-            }
+                var areaLocations = forestAreas.Data
+                .Select(area => area.Location)
+                .ToList();
 
-            var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+                areaLocations.Add("Exit");
 
-            if (menuResult.Success)
-            {
-                Console.WriteLine("Logging management added");
-                break;
-            }
-            else
-            {
-                Console.WriteLine(menuResult.Message);
+                var selectedLocation = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Choose a Forest Area Location")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(areaLocations)
+                );
+
+                if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Exiting the program...");
+                    break;
+                }
+
+                var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+
+                if (menuResult.Success)
+                {
+                    Console.WriteLine("Logging management added");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine(menuResult.Message);
+                }
             }
         }
     }
@@ -187,36 +190,39 @@ public class TreeManagementUI
         {
             var forestAreas = _forestAreaService.GettAllForestAreas();
 
-            var areaLocations = forestAreas
-            .Select(area => area.Location)
-            .ToList();
-
-            areaLocations.Add("Exit");
-
-            var selectedLocation = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Choose a Forest Area Location")
-                .PageSize(10)
-                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
-                .AddChoices(areaLocations)
-            );
-
-            if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            if (forestAreas.Success)
             {
-                Console.WriteLine("Exiting the program...");
-                break;
-            }
+                var areaLocations = forestAreas.Data
+                .Select(area => area.Location)
+                .ToList();
 
-            var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+                areaLocations.Add("Exit");
 
-            if (menuResult.Success)
-            {
-                Console.WriteLine("Thinning management added");
-                break;
-            }
-            else
-            {
-                Console.WriteLine(menuResult.Message);
+                var selectedLocation = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Choose a Forest Area Location")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(areaLocations)
+                );
+
+                if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Exiting the program...");
+                    break;
+                }
+
+                var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+
+                if (menuResult.Success)
+                {
+                    Console.WriteLine("Thinning management added");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine(menuResult.Message);
+                }
             }
         }
     }
@@ -283,36 +289,40 @@ public class TreeManagementUI
         {
             var forestAreas = _forestAreaService.GettAllForestAreas();
 
-            var areaLocations = forestAreas
-            .Select(area => area.Location)
-            .ToList();
-
-            areaLocations.Add("Exit");
-
-            var selectedLocation = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Choose a Forest Area Location")
-                .PageSize(10)
-                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
-                .AddChoices(areaLocations)
-            );
-
-            if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            if (forestAreas.Success)
             {
-                Console.WriteLine("Exiting the program...");
-                break;
-            }
 
-            var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+                var areaLocations = forestAreas.Data
+                .Select(area => area.Location)
+                .ToList();
 
-            if (menuResult.Success)
-            {
-                Console.WriteLine($"Planting management added to location {menuResult.Data}");
-                break;
-            }
-            else
-            {
-                Console.WriteLine(menuResult.Message);
+                areaLocations.Add("Exit");
+
+                var selectedLocation = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Choose a Forest Area Location")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(areaLocations)
+                );
+
+                if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Exiting the program...");
+                    break;
+                }
+
+                var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+
+                if (menuResult.Success)
+                {
+                    Console.WriteLine($"Planting management added to location {menuResult.Data}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine(menuResult.Message);
+                }
             }
         }
     }
@@ -327,54 +337,57 @@ public class TreeManagementUI
         {
             var forestAreas = _forestAreaService.GettAllForestAreas();
 
-            var areaLocations = forestAreas
-            .Select(area => area.Location)
-            .ToList();
-            areaLocations.Add("Exit");
-
-            var selectedLocation = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Choose a Forest Area Location")
-                .PageSize(10)
-                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
-                .AddChoices(areaLocations)
-            );
-            if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            if (forestAreas.Success)
             {
-                Console.WriteLine("Exiting the program...");
-                break;
-            }
+                var areaLocations = forestAreas.Data
+                .Select(area => area.Location)
+                .ToList();
+                areaLocations.Add("Exit");
 
-            string action = Utilities.GetString("Enter action: ", "Try again!");
-            treeManagement.Action = action;
+                var selectedLocation = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Choose a Forest Area Location")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(areaLocations)
+                );
+                if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Exiting the program...");
+                    break;
+                }
 
-            DateTime startdate = Utilities.GetValidDate("Startdate: ");
-            treeManagement.Date = startdate;
+                string action = Utilities.GetString("Enter action: ", "Try again!");
+                treeManagement.Action = action;
 
-            string squareMeter = Utilities.GetString("Enter squaremeters or estimated number of trees: ", "Try again!");
-            treeManagement.NumberOfTreesTreated = squareMeter;
+                DateTime startdate = Utilities.GetValidDate("Startdate: ");
+                treeManagement.Date = startdate;
 
-            string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
-            treeManagement.Responsible = responsible;
+                string squareMeter = Utilities.GetString("Enter squaremeters or estimated number of trees: ", "Try again!");
+                treeManagement.NumberOfTreesTreated = squareMeter;
 
-            Console.WriteLine("Write note: ");
-            string note = Console.ReadLine();
-            if (note == "")
-            {
-                treeManagement.Note = "No note written.";
-            }
-            treeManagement.Note = note;
+                string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
+                treeManagement.Responsible = responsible;
 
-            var result = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+                Console.WriteLine("Write note: ");
+                string note = Console.ReadLine();
+                if (note == "")
+                {
+                    treeManagement.Note = "No note written.";
+                }
+                treeManagement.Note = note;
 
-            if (result.Success)
-            {
-                Console.WriteLine($"Tree management added to location {result.Data}");
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Error, location {result.Data}");
+                var result = _treeManagementService.AddManagement(treeManagement, selectedLocation);
+
+                if (result.Success)
+                {
+                    Console.WriteLine($"Tree management added to location {result.Data}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"Error, location {result.Data}");
+                }
             }
         }
     }

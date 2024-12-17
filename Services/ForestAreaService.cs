@@ -63,8 +63,73 @@ public class ForestAreaService
 
     }
 
-    public List<ForestArea> GettAllForestAreas()
+    public OperationResult<List<ForestArea>> GettAllForestAreas()
     {
-        return _forestProgramContext.ForestAreas.ToList();
+        var allForestAreas = _forestProgramContext.ForestAreas.ToList();
+
+        if (allForestAreas == null)
+        {
+            return new OperationResult<List<ForestArea>>
+            {
+                Success = false,
+                Message = "No Areas found!"
+            };
+        }
+        return new OperationResult<List<ForestArea>>
+        {
+            Success = true,
+            Message = "Areas Found!",
+            Data = allForestAreas
+        };
+    }
+
+    public OperationResult<List<ForestAreaWithEnviroments>> GetForestAreaWithEnviroment()
+    {
+        var getAreasAndEnviroment = _forestProgramContext.ForestAreas
+         .Select(fa => new ForestAreaWithEnviroments
+         {
+             ForestAreaId = fa.ForestAreaId,
+             Location = fa.Location,
+             // Hämta alla relaterade Enviroments för varje ForestArea
+             Enviroments = _forestProgramContext.Enviroments
+                    .Where(e => e.ForestAreaId == fa.ForestAreaId)
+                    .ToList()
+         })
+            .ToList(); // Gippy tack tack
+
+        if(getAreasAndEnviroment == null)
+        {
+            return new OperationResult<List<ForestAreaWithEnviroments>>
+            {
+                Success = false,
+                Message = "Could not get any results!"
+            };
+        }
+        return new OperationResult<List<ForestAreaWithEnviroments>>
+        {
+            Success = true,
+            Data = getAreasAndEnviroment
+        };
+    }
+
+    public OperationResult<ForestArea> GetForestAreaOjbect(ForestArea forestArea)
+    {
+        var forestAreas = _forestProgramContext.ForestAreas
+        .FirstOrDefault(f => f.ForestAreaId == forestArea.ForestAreaId);
+
+        if (forestArea == null)
+        {
+            return new OperationResult<ForestArea>
+            {
+                Success = false,
+                Message = "No forestarea found"
+            };
+        }
+        return new OperationResult<ForestArea>
+        {
+            Success = true,
+            Message = "",
+            Data = forestArea
+        };
     }
 }

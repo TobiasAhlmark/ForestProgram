@@ -1,5 +1,6 @@
 using ForestProgram.Models;
 
+namespace ForestProgram.Services;
 public class SpeciesService
 {
     private readonly ForestProgramDbContext _dbContext;
