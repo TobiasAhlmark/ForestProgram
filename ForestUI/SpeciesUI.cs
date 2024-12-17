@@ -1,5 +1,6 @@
 using ForestProgram.Models;
 using Microsoft.CodeAnalysis;
+using ForestProgram.Services;
 
 namespace ForestProgram.UI;
 
@@ -10,19 +11,26 @@ public class SpeciesUI
     private readonly ForestProgramDbContext _forestProgramContext;
     private readonly SpeciesService _speciesService;
 
-    public SpeciesUI(ForestProgramDbContext context)
+    public SpeciesUI
+    (
+        ForestProgramDbContext context,
+        SpeciesService speciesService,
+        TreeService treeService
+    )
     {
         _forestProgramContext = context;
+        _speciesService = speciesService;
+        _treeService = treeService;
     }
     public void SpeciesMenu()
     {
         Console.WriteLine("Species Menu");
-        Console.WriteLine("1. Add Species");
-        Console.WriteLine("2. Update Species");
-        Console.WriteLine("3. Display Species");
+        Console.WriteLine("1. Add Species ");
+        Console.WriteLine("2. Update Species ");
+        Console.WriteLine("3. Display Species ");
         Console.WriteLine("4. Get information about a species");
 
-        int input = Utilities.GetValidIntInput("Enter Choice", "Use numbers, try again!");
+        int input = Utilities.GetValidIntInput("Enter Choice: ", "Use numbers, try again!");
         
             switch (input)
             {
@@ -43,7 +51,6 @@ public class SpeciesUI
                     Console.WriteLine("Use numbers betwen 1-4");
                     break;
             }
-        
     }
 
     public void AddSpecies()
@@ -51,41 +58,36 @@ public class SpeciesUI
         bool menu = true;
         while (menu)
         {
-            Console.WriteLine("Lägg till Art");
-            Console.Write("Art-namn:");
-            string species = Console.ReadLine();
-            Console.WriteLine("Barr eller lövträd");
-            string type = Console.ReadLine();
-            Console.WriteLine("Medellivsläng");
-            string lifeSpan = Console.ReadLine();
-            Console.WriteLine("Hur och vart trivs trädet");
-            string adaptation = Console.ReadLine();
-
-            Species species1 = new Species
-            {
-                Name = species,
-                Type = type,
-                LifeSpan = lifeSpan,
-                Adaptation = adaptation
-            };
-
-            var result = _speciesService.GetSpeciesByName(species1.Name);
+            Species addSpecies = new();
+            Console.WriteLine("Add Species");
+           
+            string species = Utilities.GetString("Enter species name: ", "Try again!");
+            
+            var result = _speciesService.GetSpeciesByName(species);
 
             if (result.Success)
             {
-                Console.WriteLine($"{result.Message} {result.Data.Name}");
+                Console.WriteLine($"{result.Message}");
+                Console.WriteLine("Going back to menu!");
+                break;
             }
             else if (!result.Success)
             {
-                Console.WriteLine($"{result.Message} {result.Data.Name}");
-                Console.WriteLine("Du återgår till main menu!");
-                break;
+                Console.WriteLine($"{result.Message}");
             }
+            string type = Utilities.GetString("coniferous trees or deciduous tree: ", "Try again!");
+            string lifeSpan = Utilities.GetString("Average lifespan: ", "Try again!");
+            string adaptation = Utilities.GetString("Adaptation, how and where: ", "Try again!");
 
-            _speciesService.AddSpecies(species1);
+            addSpecies.Name = species;
+            addSpecies.Type = type;
+            addSpecies.LifeSpan = lifeSpan;
+            addSpecies.Adaptation = adaptation;
 
-            Console.WriteLine($"{species} tillagd!");
-            Console.WriteLine("Lägg till ny art (1) Återgå till meny (0)");
+            _speciesService.AddSpecies(addSpecies);
+
+            Console.WriteLine($"added!");
+            Console.WriteLine("Add new species (1) mainmenu (0)");
             if (int.TryParse(Console.ReadLine(), out int input))
             {
                 if (input == 0)

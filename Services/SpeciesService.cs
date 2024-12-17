@@ -24,13 +24,13 @@ public class SpeciesService
             {
                 Success = false,
                 Message = "Species name not found",
-                Data = null
+                Data = species
             };
         }
         return new OperationResult<Species>
             {
                 Success = true,
-                Message = "Species name found",
+                Message = "Species already exists!",
                 Data = species
             };
     }

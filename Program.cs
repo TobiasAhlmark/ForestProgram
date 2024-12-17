@@ -26,6 +26,7 @@ internal class Program
         serviceCollection.AddSingleton<ForestAreaService>();
         serviceCollection.AddSingleton<TreeManagementService>();
         serviceCollection.AddSingleton<TreeService>();
+        serviceCollection.AddSingleton<SpeciesService>();
 
         // Bygg ServiceProvider
         var serviceProvider = serviceCollection.BuildServiceProvider();
