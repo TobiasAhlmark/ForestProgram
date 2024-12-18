@@ -116,9 +116,6 @@ public class TreeManagementUI
         DateTime startdate = Utilities.GetValidDate("Startdate: ");
         treeManagement.Date = startdate;
 
-        string squareMeter = Utilities.GetString("Enter squaremeters: ", "Try again!");
-        treeManagement.NumberOfTreesTreated = squareMeter;
-
         string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
         treeManagement.Responsible = responsible;
 
@@ -175,9 +172,6 @@ public class TreeManagementUI
 
         DateTime startdate = Utilities.GetValidDate("Startdate: ");
         treeManagement.Date = startdate;
-
-        string squareMeter = Utilities.GetString("Enter squaremeters: ", "Try again!");
-        treeManagement.NumberOfTreesTreated = squareMeter;
 
         string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
         treeManagement.Responsible = responsible;
@@ -363,8 +357,8 @@ public class TreeManagementUI
                 DateTime startdate = Utilities.GetValidDate("Startdate: ");
                 treeManagement.Date = startdate;
 
-                string squareMeter = Utilities.GetString("Enter squaremeters or estimated number of trees: ", "Try again!");
-                treeManagement.NumberOfTreesTreated = squareMeter;
+                string numberOfTrees = Utilities.GetString("Enter squaremeters or estimated number of trees: ", "Try again!");
+                treeManagement.NumberOfTreesTreated = numberOfTrees;
 
                 string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
                 treeManagement.Responsible = responsible;
