@@ -132,4 +132,23 @@ public class ForestAreaService
             Data = forestArea
         };
     }
+
+    public OperationResult<ForestArea> UpdateForestArea(ForestArea forestArea)
+    {
+        var Update = _forestProgramContext.ForestAreas
+        .FirstOrDefault(f => f.ForestAreaId == forestArea.ForestAreaId);
+
+        if(Update == null)
+        {
+            return new OperationResult<ForestArea>
+            {
+                Success = false,
+                Message = "No forest found",
+                Data = forestArea
+            };
+        }
+        Update.ForestType = forestArea.ForestType;
+        Update.Age = forestArea.Age;
+        
+    }
 }

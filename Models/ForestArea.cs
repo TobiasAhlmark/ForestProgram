@@ -1,4 +1,5 @@
 ﻿
+
 namespace ForestProgram.Models;
 
 public partial class ForestArea
@@ -15,4 +16,5 @@ public partial class ForestArea
 
     public string? EcoSystem { get; set; }
 
+    public ICollection<Enviroment> Enviroments { get; set; } = new List<Enviroment>();
 }

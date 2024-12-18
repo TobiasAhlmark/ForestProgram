@@ -196,7 +196,7 @@ public class SpeciesUI
                 Console.WriteLine("Invalid selection. No changes made.");
                 break;
         }
-        var updateSelectedSpecies = _speciesService.UpdateSpecies(species);
+        _speciesService.UpdateSpecies(species);
 
         
     }
