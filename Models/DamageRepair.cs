@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace ForestProgram.Models;
 
 public partial class DamageRepair
