@@ -1,4 +1,4 @@
-using ForestProgram.UI;
+
 using ForestProgram.Models;
 
 namespace ForestProgram.Services;
@@ -147,8 +147,20 @@ public class ForestAreaService
                 Data = forestArea
             };
         }
+
         Update.ForestType = forestArea.ForestType;
+        Update.AreaSquareMeters = forestArea.AreaSquareMeters;
         Update.Age = forestArea.Age;
-        
+        Update.Location = forestArea.Location;
+        Update.EcoSystem = forestArea.EcoSystem;
+
+        _forestProgramContext.SaveChanges();
+
+        return new OperationResult<ForestArea>
+        {
+            Success = true,
+            Message = "ForestArea updated!",
+            Data = forestArea
+        };
     }
 }

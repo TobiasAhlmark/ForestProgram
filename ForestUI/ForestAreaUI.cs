@@ -20,6 +20,7 @@ public class ForestAreaUI
     {
         "Add Forest Area",
         "Get Forest Area Information",
+        "Get specifik Forest Area Information",
         "Update forest area",
         "Exit"
     };
@@ -39,6 +40,9 @@ public class ForestAreaUI
                 break;
             case "Get Forest Area Information":
                 GetInfoForestArea();
+                break;
+            case "Get specifik Forest Area Information":
+                GetSpecifikInfoForestArea();
                 break;
             case "Update forest area":
                 UpdateForestarea();
@@ -107,6 +111,58 @@ public class ForestAreaUI
         }
     }
 
+    public void GetSpecifikInfoForestArea()
+    {
+        var forestArea = _forestAreaService.GetForestAreaWithEnviroment();
+
+        if (forestArea.Success)
+        {
+            var forestAreaOptions = forestArea.Data
+            .Select(f => $"ID: {f.ForestAreaId} - {f.Location}")
+            .ToList();
+
+            forestAreaOptions.Add("Exit");
+
+            var selectedForestArea = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Select a forest area to view details")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(forestAreaOptions)
+            );
+
+            if (selectedForestArea.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Exiting the program...");
+                return;
+            }
+
+            var selectedForestAreaData = forestArea.Data
+            .FirstOrDefault(fa => $"ID: {fa.ForestAreaId} - {fa.Location}" == selectedForestArea);
+
+            if (selectedForestAreaData != null)
+            {
+                Console.WriteLine($"Forest Area: {selectedForestAreaData.ForestAreaId} - {selectedForestAreaData.Location}");
+
+                if (selectedForestAreaData.Enviroments.Any())
+                {
+                    foreach (var env in selectedForestAreaData.Enviroments)
+                    {
+                        Console.WriteLine($"  Temperature: {env.Temperature}, Precipitation: {env.Precipitation}, Wind: {env.Wind}, Altitude: {env.Altitude}m");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("  No environment data available.");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("No forest areas were found!");
+        }
+    }
+
     public void UpdateForestarea()
     {
         var selectForestArea = _forestAreaService.GettAllForestAreas();
@@ -158,7 +214,8 @@ public class ForestAreaUI
             "Square meters",
             "Age",
             "Location",
-            "Ecosystem"
+            "Ecosystem",
+            "Exit"
         };
 
         var selectedOption = AnsiConsole.Prompt(
@@ -195,6 +252,12 @@ public class ForestAreaUI
                 forestArea.Location = newLocation;
                 break;
 
+            case "Ecosystem":
+                Console.WriteLine($"Past info {forestArea.Location}");
+                string newEcosystem = Utilities.GetString("Enter new ecosystem: ", "Try again!");
+                forestArea.EcoSystem = newEcosystem;
+                break;
+
             case "Exit":
                 Console.WriteLine("Exiting update menu...");
                 break;
@@ -203,6 +266,16 @@ public class ForestAreaUI
                 Console.WriteLine("Invalid selection. No changes made.");
                 break;
         }
-        _forestAreaService.UpdateForestArea(forestArea);
+
+        var infoUpdate = _forestAreaService.UpdateForestArea(forestArea);
+
+        if (infoUpdate.Success)
+        {
+            Console.WriteLine(infoUpdate.Message);
+        }
+        else
+        {
+            Console.WriteLine(infoUpdate.Message);
+        }
     }
 }

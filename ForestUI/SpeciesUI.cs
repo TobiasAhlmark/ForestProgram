@@ -196,9 +196,17 @@ public class SpeciesUI
                 Console.WriteLine("Invalid selection. No changes made.");
                 break;
         }
-        _speciesService.UpdateSpecies(species);
-
         
+        var infoUpdate = _speciesService.UpdateSpecies(species);
+
+        if(infoUpdate.Success)
+        {
+            Console.WriteLine(infoUpdate.Message);
+        }
+        else
+        {
+            Console.WriteLine(infoUpdate.Message);
+        }
     }
 
     public void DisplaySpecies()
