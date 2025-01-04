@@ -15,7 +15,7 @@ public class EnviromentService
     {
         _dbContext.Enviroments.Add(enviroment);
         _dbContext.SaveChanges();
-        var addEnviroment = GetAllEnviroments();
+        var addEnviroment = GetSpecificEnviroment(enviroment.EnviromentId);
 
         if(addEnviroment == null)
         {
@@ -38,5 +38,10 @@ public class EnviromentService
     public List<Enviroment> GetAllEnviroments()
     {
         return _dbContext.Enviroments.ToList();
+    }
+
+    public Enviroment GetSpecificEnviroment(int enviromentId)
+    {
+        return _dbContext.Enviroments.FirstOrDefault(E => E.EnviromentId == enviromentId);
     }
 }

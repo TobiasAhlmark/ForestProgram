@@ -27,7 +27,6 @@ public class EnviromentUI
         var menuOptions = new List<string>
     {
         "Add Environment",
-        "View Environments by Forest Area",
         "Update Environment",
         "Delete Environment",
         "Exit"
@@ -46,11 +45,8 @@ public class EnviromentUI
             case "Add Environment":
                 AddEnvironment();
                 break;
-            case "View Environments by Forest Area":
-                ViewEnvironmentsPrompt();
-                break;
             case "Update Environment":
-                UpdateEnvironmentPrompt();
+                UpdateEnvironment();
                 break;
             case "Delete Environment":
                 DeleteEnvironmentPrompt();
@@ -114,14 +110,9 @@ public class EnviromentUI
         
     }
 
-    private void ViewEnvironmentsPrompt()
+    private void UpdateEnvironment()
     {
-        throw new NotImplementedException();
-    }
-
-    private void UpdateEnvironmentPrompt()
-    {
-        throw new NotImplementedException();
+        
     }
 
     private void DeleteEnvironmentPrompt()
