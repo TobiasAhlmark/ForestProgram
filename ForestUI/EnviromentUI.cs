@@ -84,7 +84,7 @@ public class EnviromentUI
                 .AddChoices(forestAreaOptions)
         );
 
-        if (selectedForestArea.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+        if (selectedForestArea.Equals("Exit"))
         {
             Console.WriteLine("Exiting...");
             return;
@@ -94,7 +94,7 @@ public class EnviromentUI
         .FirstOrDefault(f => $"{f.ForestAreaId} - {f.Location}" == selectedForestArea);
 
         enviroment.ForestAreaId = handleSelectedArea.ForestAreaId;
-        
+
         string groundType = Utilities.GetString("Ground type: ", "Try again!");
         enviroment.GroundType = groundType;
         string temperature = Utilities.GetString("Enter average temperature: ", "Try again!");
@@ -107,12 +107,107 @@ public class EnviromentUI
         enviroment.Altitude = altitude;
 
         _enviromentService.AddEnviroment(enviroment);
-        
+
     }
 
     private void UpdateEnvironment()
     {
-        
+        Console.WriteLine("Choose foreastArea where u want to update enviroment: ");
+        var forestArea = _forestAreaService.GettAllForestAreas();
+
+        if (!forestArea.Success)
+        {
+            Console.WriteLine(forestArea.Message);
+        }
+        var forestAreaOptions = forestArea.Data
+       .Select(fa => $"{fa.ForestAreaId} - {fa.Location}")
+       .ToList();
+
+        forestAreaOptions.Add("Exit");
+
+        var selectedForestArea = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select a Forest Area")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(forestAreaOptions)
+        );
+
+        if (selectedForestArea.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("Exiting...");
+            return;
+        }
+
+        var enviromentUpdate = forestArea.Data
+        .FirstOrDefault(f => $"{f.ForestAreaId} - {f.Location}" == selectedForestArea);
+
+        var enviroment = _enviromentService.GetEnviromentByForestAreaId(enviromentUpdate.ForestAreaId);
+
+        Console.WriteLine("Choose the property of the environment to update:");
+
+        var updateOptions = new List<string>
+        {
+            "GroundType",
+            "Temperature",
+            "Precipitation",
+            "Wind",
+            "Altitude",
+            "Exit"
+        };
+
+        var selectedOption = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select a property to update")
+                .PageSize(6)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(updateOptions)
+        );
+
+        if (selectedOption.Equals("Exit"))
+        {
+            Console.WriteLine("Exiting...");
+            return;
+        }
+
+        switch (selectedOption)
+        {
+            case "GroundType":
+                Console.Write("Enter new GroundType: ");
+                var newGroundType = Console.ReadLine();
+                enviroment.GroundType = newGroundType;
+                break;
+
+            case "Temperature":
+                Console.Write("Enter new Temperature: ");
+                var newTemperature = Console.ReadLine();
+                enviroment.Temperature = newTemperature;
+                break;
+
+            case "Precipitation":
+                Console.Write("Enter new Precipitation: ");
+                var newPrecipitation = Console.ReadLine();
+                enviroment.Precipitation = newPrecipitation;
+                break;
+
+            case "Wind":
+                Console.Write("Enter new Wind: ");
+                var newWind = Console.ReadLine();
+                enviroment.Wind = newWind;
+                break;
+
+            case "Altitude":
+                Console.Write("Enter new Altitude: ");
+                var newAltitude = Console.ReadLine();
+                enviroment.Altitude = newAltitude;
+                break;
+
+            default:
+                Console.WriteLine("Invalid option selected.");
+                break;
+        }
+
+
     }
 
     private void DeleteEnvironmentPrompt()

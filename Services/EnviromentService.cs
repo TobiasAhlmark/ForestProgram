@@ -44,4 +44,9 @@ public class EnviromentService
     {
         return _dbContext.Enviroments.FirstOrDefault(E => E.EnviromentId == enviromentId);
     }
+
+    public Enviroment GetEnviromentByForestAreaId(int forestAreaId)
+    {
+        return _dbContext.Enviroments.FirstOrDefault(e => e.ForestAreaId == forestAreaId);
+    }
 }
