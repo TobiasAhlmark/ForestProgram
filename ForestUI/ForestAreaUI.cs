@@ -165,7 +165,7 @@ public class ForestAreaUI
 
     public void UpdateForestarea()
     {
-        var selectForestArea = _forestAreaService.GettAllForestAreas();
+        var selectForestArea = _forestAreaService.GetAllForestAreas();
 
         if (selectForestArea.Success)
         {

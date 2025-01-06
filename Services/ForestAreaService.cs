@@ -1,4 +1,5 @@
 
+using System.IO.Compression;
 using ForestProgram.Models;
 
 namespace ForestProgram.Services;
@@ -63,7 +64,7 @@ public class ForestAreaService
 
     }
 
-    public OperationResult<List<ForestArea>> GettAllForestAreas()
+    public OperationResult<List<ForestArea>> GetAllForestAreas()
     {
         var allForestAreas = _forestProgramContext.ForestAreas.ToList();
 
@@ -72,7 +73,8 @@ public class ForestAreaService
             return new OperationResult<List<ForestArea>>
             {
                 Success = false,
-                Message = "No Areas found!"
+                Message = "No Areas found!",
+                Data = null
             };
         }
         return new OperationResult<List<ForestArea>>
@@ -163,4 +165,29 @@ public class ForestAreaService
             Data = forestArea
         };
     }
+
+    public OperationResult<ForestArea> GetSpecifikForestArea(ForestArea forestArea)
+    {
+        var specifikForestArea = _forestProgramContext.ForestAreas
+        .FirstOrDefault(fa => fa.ForestAreaId == forestArea.ForestAreaId);
+
+        if (specifikForestArea == null)
+        {
+            return new OperationResult<ForestArea>
+            {
+                Success = false,
+                Message = "No forestarea found!"
+            };
+        }
+        else
+        {
+            return new OperationResult<ForestArea>
+            {
+                Success = true,
+                Message = "Forestarea found!",
+                Data = specifikForestArea
+            };
+        }
+    }
+
 }

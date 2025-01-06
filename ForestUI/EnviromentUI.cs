@@ -28,7 +28,6 @@ public class EnviromentUI
     {
         "Add Environment",
         "Update Environment",
-        "Delete Environment",
         "Exit"
     };
 
@@ -48,9 +47,6 @@ public class EnviromentUI
             case "Update Environment":
                 UpdateEnvironment();
                 break;
-            case "Delete Environment":
-                DeleteEnvironmentPrompt();
-                break;
             case "Exit":
                 Console.WriteLine("Exiting the Environment Menu...");
                 break;
@@ -64,7 +60,7 @@ public class EnviromentUI
     {
         Enviroment enviroment = new();
         Console.WriteLine("Choose foreastArea: ");
-        var forestArea = _forestAreaService.GettAllForestAreas();
+        var forestArea = _forestAreaService.GetAllForestAreas();
 
         if (!forestArea.Success)
         {
@@ -113,7 +109,7 @@ public class EnviromentUI
     private void UpdateEnvironment()
     {
         Console.WriteLine("Choose foreastArea where u want to update enviroment: ");
-        var forestArea = _forestAreaService.GettAllForestAreas();
+        var forestArea = _forestAreaService.GetAllForestAreas();
 
         if (!forestArea.Success)
         {
@@ -185,6 +181,7 @@ public class EnviromentUI
                 enviroment.Data.GroundType = newGroundType;
                 Console.WriteLine($"New info added {enviroment.Data.forestArea}");
                 Console.WriteLine(enviroment.Data.GroundType);
+                Console.ReadKey();
                 break;
 
             case "Temperature":
@@ -194,6 +191,7 @@ public class EnviromentUI
                 enviroment.Data.Temperature = newTemperature;
                 Console.WriteLine($"New info added {enviroment.Data.forestArea}");
                 Console.WriteLine(enviroment.Data.Temperature);
+                Console.ReadKey();
                 break;
 
             case "Precipitation":
@@ -203,6 +201,7 @@ public class EnviromentUI
                 enviroment.Data.Precipitation = newPrecipitation;
                 Console.WriteLine($"New info added {enviroment.Data.forestArea}");
                 Console.WriteLine(enviroment.Data.Precipitation);
+                Console.ReadKey();
                 break;
 
             case "Wind":
@@ -212,6 +211,7 @@ public class EnviromentUI
                 enviroment.Data.Wind = newWind;
                 Console.WriteLine($"New info added {enviroment.Data.forestArea}");
                 Console.WriteLine(enviroment.Data.Wind);
+                Console.ReadKey();
                 break;
 
             case "Altitude":
@@ -221,6 +221,7 @@ public class EnviromentUI
                 enviroment.Data.Altitude = newAltitude;
                 Console.WriteLine($"New info added {enviroment.Data.forestArea}");
                 Console.WriteLine(enviroment.Data.Altitude);
+                Console.ReadKey();
                 break;
 
             default:
@@ -229,8 +230,4 @@ public class EnviromentUI
         }
     }
 
-    private void DeleteEnvironmentPrompt()
-    {
-        throw new NotImplementedException();
-    }
 }
