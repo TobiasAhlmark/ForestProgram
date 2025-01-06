@@ -5,7 +5,6 @@ namespace ForestProgram.UI;
 
 public class MainMenu
 {
-    private readonly ForestProgramDbContext _forestProgramContext;
     private readonly SpeciesUI _speciesUI;
     private readonly TreeUI _treeUI;
     private readonly EnviromentUI _enviromentUI;
@@ -28,7 +27,6 @@ public class MainMenu
         TreeManagementUI treeManagementUI
     )
     {
-        _forestProgramContext = forestProgramDbContext;
         _speciesUI = speciesUI;
         _treeUI = treeUI;
         _enviromentUI = enviromentUI;

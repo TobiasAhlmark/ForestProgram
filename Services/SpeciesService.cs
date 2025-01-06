@@ -53,18 +53,28 @@ public class SpeciesService
 
     public OperationResult<Species> AddSpecies(Species species)
     {
-        
+        var addSpecies = _dbContext.Species
+        .FirstOrDefault(s => s.Name.ToLower() == species.Name.ToLower());
+
+        if(addSpecies != null)
+        {
+             return new OperationResult<Species>
+            {
+                Success = false,
+                Message = "Species already exists!",
+                Data = addSpecies
+            };
+        }
+
         _dbContext.Add(species);
         _dbContext.SaveChanges();
 
-
-
         return new OperationResult<Species>
-            {
-                Success = false,
-                Message = "Species name not found",
-                Data = null
-            };
+        {
+            Success = true,
+            Message = "Species added!",
+            Data = addSpecies
+        };
     }
 
     public OperationResult<Species> UpdateSpecies(Species species)
