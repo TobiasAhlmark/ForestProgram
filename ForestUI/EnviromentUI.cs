@@ -183,6 +183,8 @@ public class EnviromentUI
                 Console.Write("Enter new GroundType: ");
                 var newGroundType = Console.ReadLine();
                 enviroment.Data.GroundType = newGroundType;
+                Console.WriteLine($"New info added {enviroment.Data.forestArea}");
+                Console.WriteLine(enviroment.Data.GroundType);
                 break;
 
             case "Temperature":
@@ -190,6 +192,8 @@ public class EnviromentUI
                 Console.Write("Enter new Temperature: ");
                 var newTemperature = Console.ReadLine();
                 enviroment.Data.Temperature = newTemperature;
+                Console.WriteLine($"New info added {enviroment.Data.forestArea}");
+                Console.WriteLine(enviroment.Data.Temperature);
                 break;
 
             case "Precipitation":
@@ -197,6 +201,8 @@ public class EnviromentUI
                 Console.Write("Enter new Precipitation: ");
                 var newPrecipitation = Console.ReadLine();
                 enviroment.Data.Precipitation = newPrecipitation;
+                Console.WriteLine($"New info added {enviroment.Data.forestArea}");
+                Console.WriteLine(enviroment.Data.Precipitation);
                 break;
 
             case "Wind":
@@ -204,6 +210,8 @@ public class EnviromentUI
                 Console.Write("Enter new Wind: ");
                 var newWind = Console.ReadLine();
                 enviroment.Data.Wind = newWind;
+                Console.WriteLine($"New info added {enviroment.Data.forestArea}");
+                Console.WriteLine(enviroment.Data.Wind);
                 break;
 
             case "Altitude":
@@ -211,6 +219,8 @@ public class EnviromentUI
                 Console.Write("Enter new Altitude: ");
                 var newAltitude = Console.ReadLine();
                 enviroment.Data.Altitude = newAltitude;
+                Console.WriteLine($"New info added {enviroment.Data.forestArea}");
+                Console.WriteLine(enviroment.Data.Altitude);
                 break;
 
             default:
