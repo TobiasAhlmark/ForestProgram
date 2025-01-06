@@ -152,56 +152,56 @@ public class TreeManagementUI
             treeManagement.Species = handleSpecie;
         }
 
-            Console.WriteLine("Write note: ");
-            string note = Console.ReadLine();
-            treeManagement.Note = string.IsNullOrEmpty(note) ? "No note written." : note;
+        Console.WriteLine("Write note: ");
+        string note = Console.ReadLine();
+        treeManagement.Note = string.IsNullOrEmpty(note) ? "No note written." : note;
 
-            while (true)
+        while (true)
+        {
+            var forestAreas = _forestAreaService.GetAllForestAreas();
+
+            if (forestAreas.Success)
             {
-                var forestAreas = _forestAreaService.GetAllForestAreas();
+                var areaLocations = forestAreas.Data
+                .Select(area => area.Location)
+                .ToList();
 
-                if (forestAreas.Success)
+                areaLocations.Add("Exit");
+
+                var selectedLocation = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Choose a Forest Area Location")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(areaLocations)
+                );
+
+                if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
                 {
-                    var areaLocations = forestAreas.Data
-                    .Select(area => area.Location)
-                    .ToList();
+                    Console.WriteLine("Exiting the program...");
+                    break;
+                }
 
-                    areaLocations.Add("Exit");
+                var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
 
-                    var selectedLocation = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Choose a Forest Area Location")
-                        .PageSize(10)
-                        .MoreChoicesText("[grey](Use arrow keys to select)[/]")
-                        .AddChoices(areaLocations)
-                    );
+                if (menuResult.Success)
+                {
+                    Console.WriteLine("Logging management added");
+                    Console.WriteLine(menuResult.Data.ForestArea.Location);
+                    Console.WriteLine(menuResult.Data.Species.Name);
+                    Console.WriteLine("squaremeters - " + menuResult.Data.ForestArea.AreaSquareMeters);
+                    Console.WriteLine(menuResult.Data.Date.Value.ToString("yyyy-MM-dd"));
+                    Console.WriteLine("Responsible - " + menuResult.Data.Responsible);
 
-                    if (selectedLocation.Equals("Exit", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Console.WriteLine("Exiting the program...");
-                        break;
-                    }
-
-                    var menuResult = _treeManagementService.AddManagement(treeManagement, selectedLocation);
-
-                    if (menuResult.Success)
-                    {
-                        Console.WriteLine("Logging management added");
-                        Console.WriteLine(menuResult.Data.ForestArea.Location);
-                        Console.WriteLine(menuResult.Data.Species.Name);
-                        Console.WriteLine("squaremeters - " + menuResult.Data.ForestArea.AreaSquareMeters);
-                        Console.WriteLine(menuResult.Data.Date.Value.ToString("yyyy-MM-dd"));
-                        Console.WriteLine("Responsible - " + menuResult.Data.Responsible);
-                    
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine(menuResult.Message);
-                    }
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine(menuResult.Message);
                 }
             }
         }
+    }
 
     public void Thinning()
     {
@@ -214,6 +214,36 @@ public class TreeManagementUI
 
         string responsible = Utilities.GetString("Enter name of the person in charge of the action: ", "try again");
         treeManagement.Responsible = responsible;
+
+        var speciesList = _speciesService.GetAllSpecies();
+
+        if (speciesList.Success)
+        {
+            var speciesOptions = speciesList.Data
+            .Select(s => s.Name)
+            .ToList();
+
+            speciesOptions.Add("Exit");
+
+            var selectedSpecies = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select a species")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(speciesOptions)
+        );
+
+            if (selectedSpecies.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Exiting the program...");
+                return;
+            }
+
+            var handleSpecie = speciesList.Data
+            .FirstOrDefault(s => s.Name == selectedSpecies);
+
+            treeManagement.Species = handleSpecie;
+        }
 
         Console.WriteLine("Write note: ");
         string note = Console.ReadLine();
@@ -250,6 +280,12 @@ public class TreeManagementUI
                 if (menuResult.Success)
                 {
                     Console.WriteLine("Thinning management added");
+                    Console.WriteLine(menuResult.Data.ForestArea.Location);
+                    Console.WriteLine(menuResult.Data.Species.Name);
+                    Console.WriteLine("squaremeters - " + menuResult.Data.ForestArea.AreaSquareMeters);
+                    Console.WriteLine(menuResult.Data.Date.Value.ToString("yyyy-MM-dd"));
+                    Console.WriteLine("Responsible - " + menuResult.Data.Responsible);
+
                     break;
                 }
                 else
@@ -277,12 +313,10 @@ public class TreeManagementUI
 
         while (true)
         {
-            // Hämta alla arter
             Console.WriteLine("Select species: ");
             var speciesService = new SpeciesService(_forestProgramContext);
             var speciesList = speciesService.GetAllSpecies();
 
-            // Presentera en lista med arter för användaren att välja från
             var speciesNames = speciesList.Data
             .Select(s => s.Name)
             .ToList();
@@ -302,8 +336,7 @@ public class TreeManagementUI
                 break;
             }
 
-            //Hämtar den valda arten
-            var selectedSpecies = speciesService.GetSpeciesByName(selectedSpeciesName);
+            var selectedSpecies = _speciesService.GetSpeciesByName(selectedSpeciesName);
 
             if (selectedSpecies.Success)
             {
@@ -404,11 +437,7 @@ public class TreeManagementUI
 
                 Console.WriteLine("Write note: ");
                 string note = Console.ReadLine();
-                if (note == "")
-                {
-                    treeManagement.Note = "No note written.";
-                }
-                treeManagement.Note = note;
+                treeManagement.Note = string.IsNullOrEmpty(note) ? "No note written." : note;
 
                 var result = _treeManagementService.AddManagement(treeManagement, selectedLocation);
 
@@ -431,7 +460,6 @@ public class TreeManagementUI
 
         if (manageMentResult.Success)
         {
-            // Skapa en lista med managements som ska visas i menyn
             var managementOptions = manageMentResult.Data
                 .Select(tm => $"{tm.ForestArea.Location} - {tm.Action}")
                 .ToList();
