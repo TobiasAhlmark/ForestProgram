@@ -55,11 +55,10 @@ public class MainMenu
 
         while (true)
         {
-            // Visa meny med Spectre.Console
             var selection = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("[bold blue]=== Main Menu ===[/]\nSelect an option using [green]arrow keys[/]:")
-                    .PageSize(10) 
+                    .PageSize(10)
                     .AddChoices(menuItems)
             );
 
@@ -91,15 +90,26 @@ public class MainMenu
                     break;
             }
 
-            // Behandla valet
-            AnsiConsole.MarkupLine($"[bold yellow]You selected:[/] [green]{selection}[/]");
-
-            // Bekräftelse att fortsätta eller avsluta
-            var continueApp = AnsiConsole.Confirm("Would you like to go back to the main menu?");
-            if (!continueApp)
+            var exitOptions = new List<string>
             {
-                AnsiConsole.MarkupLine("[bold red]Exiting the application. Goodbye![/]");
-                break;
+                "Go back to the Main Menu",
+                "Exit the Application"
+            };
+
+            var exitSelection = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[bold red]=== Exit Options ===[/]\nSelect an option using [green]arrow keys[/]:")
+                    .PageSize(3)
+                    .AddChoices(exitOptions)
+            );
+
+            switch (exitSelection)
+            {
+                case "Go back to the Main Menu":
+                    continue; // Fortsätt loopen för att gå tillbaka till huvudmenyn
+                case "Exit the Application":
+                    AnsiConsole.MarkupLine("[bold red]Exiting the application. Goodbye![/]");
+                    return; // Avslutar programmet
             }
         }
     }

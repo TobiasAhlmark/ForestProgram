@@ -212,9 +212,6 @@ public class EnviromentUI
                 Console.WriteLine("Invalid option selected.");
                 break;
         }
-        
-
-
     }
 
     private void DeleteEnvironmentPrompt()
