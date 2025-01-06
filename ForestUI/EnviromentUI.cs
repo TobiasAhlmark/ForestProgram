@@ -149,7 +149,7 @@ public class EnviromentUI
             Console.WriteLine(enviroment.Message);
             return;
         }
-    
+
         Console.WriteLine("Choose the property of the environment to update:");
 
         var updateOptions = new List<string>
@@ -179,30 +179,35 @@ public class EnviromentUI
         switch (selectedOption)
         {
             case "GroundType":
+                Console.WriteLine($"Past info {enviroment.Data.GroundType}");
                 Console.Write("Enter new GroundType: ");
                 var newGroundType = Console.ReadLine();
                 enviroment.Data.GroundType = newGroundType;
                 break;
 
             case "Temperature":
+                Console.WriteLine($"Past info {enviroment.Data.Temperature}");
                 Console.Write("Enter new Temperature: ");
                 var newTemperature = Console.ReadLine();
                 enviroment.Data.Temperature = newTemperature;
                 break;
 
             case "Precipitation":
+                Console.WriteLine($"Past info {enviroment.Data.Precipitation}");
                 Console.Write("Enter new Precipitation: ");
                 var newPrecipitation = Console.ReadLine();
                 enviroment.Data.Precipitation = newPrecipitation;
                 break;
 
             case "Wind":
+                Console.WriteLine($"Past info {enviroment.Data.Wind}");
                 Console.Write("Enter new Wind: ");
                 var newWind = Console.ReadLine();
                 enviroment.Data.Wind = newWind;
                 break;
 
             case "Altitude":
+                Console.WriteLine($"Past info {enviroment.Data.Altitude}");
                 Console.Write("Enter new Altitude: ");
                 var newAltitude = Console.ReadLine();
                 enviroment.Data.Altitude = newAltitude;
