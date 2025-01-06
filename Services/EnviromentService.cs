@@ -17,7 +17,7 @@ public class EnviromentService
         _dbContext.SaveChanges();
         var addEnviroment = GetSpecificEnviroment(enviroment.EnviromentId);
 
-        if(addEnviroment == null)
+        if (addEnviroment == null)
         {
             return new OperationResult<Enviroment>
             {
@@ -35,18 +35,69 @@ public class EnviromentService
         };
     }
 
-    public List<Enviroment> GetAllEnviroments()
+    public OperationResult<List<Enviroment>> GetAllEnviroments()
     {
-        return _dbContext.Enviroments.ToList();
+        var result = _dbContext.Enviroments.ToList();
+
+        if (result == null)
+        {
+            return new OperationResult<List<Enviroment>>
+            {
+                Success = false,
+                Message = "No enviroment found!",
+                Data = result
+            };
+        }
+
+        return new OperationResult<List<Enviroment>>
+        {
+            Success = true,
+            Message = "",
+            Data = result
+        };
     }
 
-    public Enviroment GetSpecificEnviroment(int enviromentId)
+    public OperationResult<Enviroment> GetSpecificEnviroment(int enviromentId)
     {
-        return _dbContext.Enviroments.FirstOrDefault(E => E.EnviromentId == enviromentId);
+        var result = _dbContext.Enviroments.FirstOrDefault(E => E.EnviromentId == enviromentId);
+
+        if (result == null)
+        {
+            return new OperationResult<Enviroment>
+            {
+                Success = false,
+                Message = "No enviroment found!",
+                Data = result
+            };
+        }
+
+        return new OperationResult<Enviroment>
+        {
+            Success = true,
+            Message = "",
+            Data = result
+        };
     }
 
-    public Enviroment GetEnviromentByForestAreaId(int forestAreaId)
+    public OperationResult<Enviroment> GetEnviromentByForestAreaId(int forestAreaId)
     {
-        return _dbContext.Enviroments.FirstOrDefault(e => e.ForestAreaId == forestAreaId);
+        var result = _dbContext.Enviroments.FirstOrDefault(e => e.ForestAreaId == forestAreaId);
+
+        if (result == null)
+        {
+            return new OperationResult<Enviroment>
+            {
+                Success = false,
+                Message = "No enviroment found!",
+                Data = result
+            };
+        }
+
+        return new OperationResult<Enviroment>
+        {
+            Success = true,
+            Message = "",
+            Data = result
+        };
     }
 }

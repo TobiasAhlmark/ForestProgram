@@ -144,6 +144,12 @@ public class EnviromentUI
 
         var enviroment = _enviromentService.GetEnviromentByForestAreaId(enviromentUpdate.ForestAreaId);
 
+        if (!enviroment.Success)
+        {
+            Console.WriteLine(enviroment.Message);
+            return;
+        }
+    
         Console.WriteLine("Choose the property of the environment to update:");
 
         var updateOptions = new List<string>
@@ -175,37 +181,38 @@ public class EnviromentUI
             case "GroundType":
                 Console.Write("Enter new GroundType: ");
                 var newGroundType = Console.ReadLine();
-                enviroment.GroundType = newGroundType;
+                enviroment.Data.GroundType = newGroundType;
                 break;
 
             case "Temperature":
                 Console.Write("Enter new Temperature: ");
                 var newTemperature = Console.ReadLine();
-                enviroment.Temperature = newTemperature;
+                enviroment.Data.Temperature = newTemperature;
                 break;
 
             case "Precipitation":
                 Console.Write("Enter new Precipitation: ");
                 var newPrecipitation = Console.ReadLine();
-                enviroment.Precipitation = newPrecipitation;
+                enviroment.Data.Precipitation = newPrecipitation;
                 break;
 
             case "Wind":
                 Console.Write("Enter new Wind: ");
                 var newWind = Console.ReadLine();
-                enviroment.Wind = newWind;
+                enviroment.Data.Wind = newWind;
                 break;
 
             case "Altitude":
                 Console.Write("Enter new Altitude: ");
                 var newAltitude = Console.ReadLine();
-                enviroment.Altitude = newAltitude;
+                enviroment.Data.Altitude = newAltitude;
                 break;
 
             default:
                 Console.WriteLine("Invalid option selected.");
                 break;
         }
+        
 
 
     }
