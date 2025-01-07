@@ -21,9 +21,12 @@ public partial class DamageAndDisease
 
     public string? Spread { get; set; }
 
-    public DateOnly? DateFirstObservation { get; set; }
+    public DateTime? DateFirstObservation { get; set; }
 
-    public DateOnly? DateLastObservation { get; set; }
+    public DateTime? DateLastObservation { get; set; }
 
     public string? Note { get; set; }
+
+    public ForestArea forestArea { get; set; }
+    public Species species { get; set; }
 }
