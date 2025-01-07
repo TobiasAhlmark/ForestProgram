@@ -159,6 +159,15 @@ public class DamageAndDiseaseUI
 
         var result = _damageAndDiseaseService.AddDamageAndDiseaseToForestArea(damageAndDisease);
 
+        if(result.Success)
+        {
+            Console.WriteLine(result.Message);
+        }
+        else
+        {
+            Console.WriteLine(result.Message);
+        }
+
     }
 
     private void ViewAllDamageAndDiseaseReports()

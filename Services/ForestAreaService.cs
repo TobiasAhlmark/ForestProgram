@@ -85,7 +85,7 @@ public class ForestAreaService
         };
     }
 
-    public OperationResult<List<ForestAreaWithEnviroments>> GetForestAreaWithEnviroment()
+    public OperationResult<List<ForestAreaWithEnviroments>> GetForestAreaWithEnviromentAndDamageAndDisease()
     {
         var getAreasAndEnviroment = _forestProgramContext.ForestAreas
          .Select(fa => new ForestAreaWithEnviroments
@@ -95,11 +95,15 @@ public class ForestAreaService
              // Hämta alla relaterade Enviroments för varje ForestArea
              Enviroments = _forestProgramContext.Enviroments
                     .Where(e => e.ForestAreaId == fa.ForestAreaId)
-                    .ToList()
+                    .ToList(),
+            // Hämta alla relaterade DamageAndDisease för varje ForestArea
+             DamageAndDiseases = _forestProgramContext.DamageAndDiseases
+                .Where(dd => dd.ForestAreaId == fa.ForestAreaId)
+                .ToList()
          })
             .ToList(); // Gippy tack tack
 
-        if(getAreasAndEnviroment == null)
+        if (getAreasAndEnviroment == null)
         {
             return new OperationResult<List<ForestAreaWithEnviroments>>
             {
@@ -140,7 +144,7 @@ public class ForestAreaService
         var Update = _forestProgramContext.ForestAreas
         .FirstOrDefault(f => f.ForestAreaId == forestArea.ForestAreaId);
 
-        if(Update == null)
+        if (Update == null)
         {
             return new OperationResult<ForestArea>
             {

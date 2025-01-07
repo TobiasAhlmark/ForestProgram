@@ -88,7 +88,7 @@ public class ForestAreaUI
 
     public void GetInfoForestArea()
     {
-        var forestareas = _forestAreaService.GetForestAreaWithEnviroment();
+        var forestareas = _forestAreaService.GetForestAreaWithEnviromentAndDamageAndDisease();
 
         if (forestareas.Success)
         {
@@ -113,7 +113,7 @@ public class ForestAreaUI
 
     public void GetSpecifikInfoForestArea()
     {
-        var forestArea = _forestAreaService.GetForestAreaWithEnviroment();
+        var forestArea = _forestAreaService.GetForestAreaWithEnviromentAndDamageAndDisease();
 
         if (forestArea.Success)
         {
@@ -144,11 +144,15 @@ public class ForestAreaUI
             {
                 Console.WriteLine($"Forest Area: {selectedForestAreaData.ForestAreaId} - {selectedForestAreaData.Location}");
 
-                if (selectedForestAreaData.Enviroments.Any())
+                if (selectedForestAreaData.Enviroments.Any() || selectedForestAreaData.DamageAndDiseases.Any())
                 {
                     foreach (var env in selectedForestAreaData.Enviroments)
                     {
                         Console.WriteLine($"  Temperature: {env.Temperature}, Precipitation: {env.Precipitation}, Wind: {env.Wind}, Altitude: {env.Altitude}m");
+                    }
+                    foreach (var dmg in selectedForestAreaData.DamageAndDiseases)
+                    {
+                        Console.WriteLine($"   Damage type: {dmg.DamageAndDiseaseType}, Symptom: {dmg.Symptom}, First observationdate {dmg.DateFirstObservation}");
                     }
                 }
                 else
