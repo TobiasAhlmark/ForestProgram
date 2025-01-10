@@ -321,11 +321,11 @@ public class DamageAndDiseaseUI
 
                             if (result.Success)
                             {
-                                Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                                Console.WriteLine("Forest area updated successfully.");
                             }
                             else
                             {
-                                Console.WriteLine($"Failed to update DamageAndDiseaseType: {result.Message}");
+                                Console.WriteLine($"Failed to update forest area: {result.Message}");
                             }
                         }
                         else
@@ -348,11 +348,11 @@ public class DamageAndDiseaseUI
 
                         if (resultType.Success)
                         {
-                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                            Console.WriteLine("Type updated successfully.");
                         }
                         else
                         {
-                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultType.Message}");
+                            Console.WriteLine($"Failed to update Type: {resultType.Message}");
                         }
                         break;
 
@@ -366,11 +366,11 @@ public class DamageAndDiseaseUI
 
                         if (resultSymptom.Success)
                         {
-                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                            Console.WriteLine("Symptom updated successfully.");
                         }
                         else
                         {
-                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultSymptom.Message}");
+                            Console.WriteLine($"Failed to update symptom: {resultSymptom.Message}");
                         }
                         break;
 
@@ -383,11 +383,11 @@ public class DamageAndDiseaseUI
                         var resultSeverity = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
                         if (resultSeverity.Success)
                         {
-                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                            Console.WriteLine("Severity updated successfully.");
                         }
                         else
                         {
-                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultSeverity.Message}");
+                            Console.WriteLine($"Failed to update severity: {resultSeverity.Message}");
                         }
                         break;
 
@@ -401,11 +401,11 @@ public class DamageAndDiseaseUI
 
                         if (resultReason.Success)
                         {
-                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                            Console.WriteLine("Date updated successfully.");
                         }
                         else
                         {
-                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultReason.Message}");
+                            Console.WriteLine($"Failed to update Date: {resultReason.Message}");
                         }
                         break;
 
@@ -419,24 +419,66 @@ public class DamageAndDiseaseUI
 
                         if (resultSpread.Success)
                         {
-                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                            Console.WriteLine("Spread updated successfully.");
                         }
                         else
                         {
-                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultSpread.Message}");
+                            Console.WriteLine($"Failed to update spread: {resultSpread.Message}");
                         }
                         break;
 
                     case "DateFirstObservation":
                         Console.WriteLine($"Past info: {selected.DateFirstObservation?.ToString("yyyy-MM-dd")}");
+                        DateTime newFirstObservation = Utilities.GetValidDate("Enter new date yyyy-MM-dd: ");
+
+                        selected.DateFirstObservation = newFirstObservation;
+
+                        var resultFirsObservation = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        if (resultFirsObservation.Success)
+                        {
+                            Console.WriteLine("report updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update report: {resultFirsObservation.Message}");
+                        }
                         break;
 
                     case "DateLastObservation":
                         Console.WriteLine($"Past info: {selected.DateLastObservation?.ToString("yyyy-MM-dd")}");
+                        DateTime newLastObservation = Utilities.GetValidDate("Enter new date yyyy-MM-dd: ");
+
+                        selected.DateLastObservation = newLastObservation;
+
+                        var resultLastObservation = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        if (resultLastObservation.Success)
+                        {
+                            Console.WriteLine("report updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update report: {resultLastObservation.Message}");
+                        }
                         break;
 
                     case "Note":
                         Console.WriteLine($"Past info: {selected.Note ?? "No note Written"}");
+                        string newNote = Utilities.GetString("Enter new note: ", "Try again!");
+
+                        selected.Note = newNote;
+
+                        var resultNote = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        if (resultNote.Success)
+                        {
+                            Console.WriteLine("Note Updated succesfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update note {resultNote.Message}");
+                        }
                         break;
 
                     case "Exit":
