@@ -1,26 +1,22 @@
 using ForestProgram.Models;
 using ForestProgram.Services;
-using Microsoft.CodeAnalysis.Options;
 using Spectre.Console;
 
 namespace ForestProgram.UI;
 
 public class DamageAndDiseaseUI
 {
-    private readonly ForestProgramDbContext _forestProgramContext;
     private readonly DamageAndDiseaseService _damageAndDiseaseService;
     private readonly ForestAreaService _forestAreaService;
     private readonly SpeciesService _speciesService;
 
     public DamageAndDiseaseUI
     (
-        ForestProgramDbContext forestProgramDbContext,
         DamageAndDiseaseService damageAndDiseaseService,
         ForestAreaService forestAreaService,
         SpeciesService speciesService
     )
     {
-        _forestProgramContext = forestProgramDbContext;
         _damageAndDiseaseService = damageAndDiseaseService;
         _forestAreaService = forestAreaService;
         _speciesService = speciesService;
@@ -33,7 +29,6 @@ public class DamageAndDiseaseUI
         "View All Damage and Disease Reports",
         "View Specific Damage or Disease Report",
         "Update Damage or Disease Report",
-        "Delete Damage or Disease Report",
         "Exit"
     };
 
@@ -58,9 +53,6 @@ public class DamageAndDiseaseUI
                 break;
             case "Update Damage or Disease Report":
                 UpdateDamageOrDiseaseReport();
-                break;
-            case "Delete Damage or Disease Report":
-                DeleteDamageOrDiseaseReport();
                 break;
             case "Exit":
                 Console.WriteLine("Exiting the Damage and Disease Menu...");
@@ -497,8 +489,4 @@ public class DamageAndDiseaseUI
         }
     }
 
-    private void DeleteDamageOrDiseaseReport()
-    {
-        // Implementation for deleting a report
-    }
 }

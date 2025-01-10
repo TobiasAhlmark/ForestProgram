@@ -1,7 +1,7 @@
 ﻿
 namespace ForestProgram.Models;
 
-public partial class DamageRepair
+public class DamageRepair
 {
     public int DamageRepairId { get; set; }
 
