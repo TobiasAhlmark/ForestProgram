@@ -88,6 +88,8 @@ public class DamageAndDiseaseService
         update.DateLastObservation = damageAndDisease.DateLastObservation;
         update.Note = damageAndDisease.Note;
 
+        _forestProgramDbContext.SaveChanges();
+
         return new OperationResult<DamageAndDisease>
         {
             Success = true,

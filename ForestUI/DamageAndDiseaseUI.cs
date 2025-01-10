@@ -301,7 +301,7 @@ public class DamageAndDiseaseUI
                         if (forestAreas.Success)
                         {
                             var areaLocations = forestAreas.Data
-                            .Select(area => $"Id:{area.ForestAreaId} - {area.Location}" )
+                            .Select(area => $"Id:{area.ForestAreaId} - {area.Location}")
                             .ToList();
 
                             var selectedLocation = AnsiConsole.Prompt(
@@ -319,64 +319,141 @@ public class DamageAndDiseaseUI
 
                             var result = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
 
-                        }
-                            break;
-
-                    case "TreeId":
-                                Console.WriteLine("TreeId selected for update.");
-                                break;
-
-                            case "SpeciesId":
-                                Console.WriteLine("SpeciesId selected for update.");
-                                break;
-
-                            case "DamageAndDiseaseType":
-                                Console.WriteLine("DamageAndDiseaseType selected for update.");
-                                break;
-
-                            case "Symptom":
-                                Console.WriteLine("Symptom selected for update.");
-                                break;
-
-                            case "Severity":
-                                Console.WriteLine("Severity selected for update.");
-                                break;
-
-                            case "Reason":
-                                Console.WriteLine("Reason selected for update.");
-                                break;
-
-                            case "Spread":
-                                Console.WriteLine("Spread selected for update.");
-                                break;
-
-                            case "DateFirstObservation":
-                                Console.WriteLine("DateFirstObservation selected for update.");
-                                break;
-
-                            case "DateLastObservation":
-                                Console.WriteLine("DateLastObservation selected for update.");
-                                break;
-
-                            case "Note":
-                                Console.WriteLine("Note selected for update.");
-                                break;
-
-                            case "Exit":
-                                Console.WriteLine("Exiting update menu.");
-                                break;
-
-                            default:
-                                Console.WriteLine("Invalid selection.");
-                                break;
+                            if (result.Success)
+                            {
+                                Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Failed to update DamageAndDiseaseType: {result.Message}");
                             }
                         }
                         else
                         {
-                            Console.WriteLine("No valid report was selected!");
+                            Console.WriteLine(forestAreas.Message);
                         }
+                        break;
+
+                    case "TreeId":
+                        Console.WriteLine($"Past info: {selected.SpeciesId}");
+                        break;
+
+                    case "DamageAndDiseaseType":
+                        Console.WriteLine($"Past info: {selected.DamageAndDiseaseType ?? "No past info"}");
+                        string newType = Utilities.GetString("Enter new info: ", "Try again!");
+
+                        selected.DamageAndDiseaseType = newType;
+
+                        var resultType = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        if (resultType.Success)
+                        {
+                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultType.Message}");
+                        }
+                        break;
+
+                    case "Symptom":
+                        Console.WriteLine($"Past info: {selected.Symptom ?? "No past info"}");
+                        string newSymptom = Utilities.GetString("Enter new info: ", "Try again!");
+
+                        selected.Symptom = newSymptom;
+
+                        var resultSymptom = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        if (resultSymptom.Success)
+                        {
+                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultSymptom.Message}");
+                        }
+                        break;
+
+                    case "Severity":
+                        Console.WriteLine($"Past info: {selected.Severity ?? "No past info"}");
+                        string newSeverity = Utilities.GetString("Enter new info: ", "Try again!");
+
+                        selected.Severity = newSeverity;
+
+                        var resultSeverity = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+                        if (resultSeverity.Success)
+                        {
+                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultSeverity.Message}");
+                        }
+                        break;
+
+                    case "Reason":
+                        Console.WriteLine($"Past info: {selected.Reason ?? "No past info"}");
+                        string newReason = Utilities.GetString("Enter new info: ", "Try again!");
+
+                        selected.Reason = newReason;
+
+                        var resultReason = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        if (resultReason.Success)
+                        {
+                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultReason.Message}");
+                        }
+                        break;
+
+                    case "Spread":
+                        Console.WriteLine($"Past info: {selected.Spread ?? "No past info"}");
+                        string newSpread = Utilities.GetString("Enter new info: ", "Try again!");
+
+                        selected.Spread = newSpread;
+
+                        var resultSpread = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        if (resultSpread.Success)
+                        {
+                            Console.WriteLine("DamageAndDiseaseType updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to update DamageAndDiseaseType: {resultSpread.Message}");
+                        }
+                        break;
+
+                    case "DateFirstObservation":
+                        Console.WriteLine($"Past info: {selected.DateFirstObservation?.ToString("yyyy-MM-dd")}");
+                        break;
+
+                    case "DateLastObservation":
+                        Console.WriteLine($"Past info: {selected.DateLastObservation?.ToString("yyyy-MM-dd")}");
+                        break;
+
+                    case "Note":
+                        Console.WriteLine($"Past info: {selected.Note ?? "No note Written"}");
+                        break;
+
+                    case "Exit":
+                        Console.WriteLine("Exiting update menu.");
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid selection.");
+                        break;
                 }
             }
+            else
+            {
+                Console.WriteLine("No valid report was selected!");
+            }
+        }
+    }
 
     private void DeleteDamageOrDiseaseReport()
     {
