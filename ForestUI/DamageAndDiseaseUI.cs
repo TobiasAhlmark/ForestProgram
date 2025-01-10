@@ -1,5 +1,6 @@
 using ForestProgram.Models;
 using ForestProgram.Services;
+using Microsoft.CodeAnalysis.Options;
 using Spectre.Console;
 
 namespace ForestProgram.UI;
@@ -161,7 +162,7 @@ public class DamageAndDiseaseUI
 
         var result = _damageAndDiseaseService.AddDamageAndDiseaseReportToForestArea(damageAndDisease);
 
-        if(result.Success)
+        if (result.Success)
         {
             Console.WriteLine(result.Message);
         }
@@ -176,7 +177,7 @@ public class DamageAndDiseaseUI
     {
         var result = _damageAndDiseaseService.GetAllDamageAndDiseaseReports();
 
-        if(!result.Success)
+        if (!result.Success)
         {
             Console.WriteLine(result.Message);
         }
@@ -197,13 +198,185 @@ public class DamageAndDiseaseUI
 
     private void ViewSpecificDamageOrDiseaseReport()
     {
-        // Implementation for viewing a specific report
+        var damageAndDisease = _damageAndDiseaseService.GetAllDamageAndDiseaseReports();
+
+        if (!damageAndDisease.Success)
+        {
+            Console.WriteLine(damageAndDisease.Message);
+        }
+        else
+        {
+            var options = damageAndDisease.Data
+            .Select(dmg => $"Report id: {dmg.DamageAndDiseaseId} Location: {dmg.forestArea.Location ?? "Unknown"}")
+            .ToList();
+
+            options.Add("Exit");
+
+            var selectedOption = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("Select a report")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(options)
+            );
+
+            var selected = damageAndDisease.Data
+            .FirstOrDefault(r => $"Report id: {r.DamageAndDiseaseId} Location: {r.forestArea?.Location ?? "Unknown"}" == selectedOption);
+
+            if (selected != null)
+            {
+                Console.WriteLine($"Species: {selected.species.Name} - Severity: {selected.Severity}");
+                Console.WriteLine($"Type   : {selected.DamageAndDiseaseType} - Symptom: {selected.Symptom}");
+                Console.WriteLine($"Reason : {selected.Reason} - Spread: {selected.Spread}");
+                Console.WriteLine("First Observation: " + selected.DateFirstObservation?.ToString("yyyy-MM-dd"));
+                Console.WriteLine("Last Observation : " + selected.DateLastObservation?.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                Console.WriteLine("No valid report was selected!");
+            }
+        }
+        Console.ReadKey();
     }
 
     private void UpdateDamageOrDiseaseReport()
     {
-        // Implementation for updating a report
-    }
+        var damageAndDisease = _damageAndDiseaseService.GetAllDamageAndDiseaseReports();
+
+        if (!damageAndDisease.Success)
+        {
+            Console.WriteLine(damageAndDisease.Message);
+        }
+        else
+        {
+            var options = damageAndDisease.Data
+            .Select(dmg => $"Report id: {dmg.DamageAndDiseaseId} Location: {dmg.forestArea.Location ?? "Unknown"}")
+            .ToList();
+
+            options.Add("Exit");
+
+            var selectedOption = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("Select a report")
+                .PageSize(10)
+                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                .AddChoices(options)
+            );
+
+            var selected = damageAndDisease.Data
+            .FirstOrDefault(r => $"Report id: {r.DamageAndDiseaseId} Location: {r.forestArea?.Location ?? "Unknown"}" == selectedOption);
+
+            if (selected != null)
+            {
+                var fields = new List<string>
+                {
+                    "ForestAreaId",
+                    "TreeId",
+                    "SpeciesId",
+                    "DamageAndDiseaseType",
+                    "Symptom",
+                    "Severity",
+                    "Reason",
+                    "Spread",
+                    "DateFirstObservation",
+                    "DateLastObservation",
+                    "Note",
+                    "Exit"
+                };
+
+                var selectedField = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("Select a field to update")
+                        .PageSize(10)
+                        .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                        .AddChoices(fields)
+                );
+
+                switch (selectedField)
+                {
+                    case "ForestAreaId":
+                        Console.WriteLine($"Past info: {selected.ForestAreaId} ({selected.forestArea.Location})");
+                        var forestAreas = _forestAreaService.GetAllForestAreas();
+
+                        if (forestAreas.Success)
+                        {
+                            var areaLocations = forestAreas.Data
+                            .Select(area => $"Id:{area.ForestAreaId} - {area.Location}" )
+                            .ToList();
+
+                            var selectedLocation = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                                .Title("Choose a Forest Area Location")
+                                .PageSize(10)
+                                .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                                .AddChoices(areaLocations)
+                            );
+
+                            var update = forestAreas.Data
+                            .FirstOrDefault(u => u.Location == selectedLocation);
+
+                            selected.ForestAreaId = update.ForestAreaId;
+
+                            var result = _damageAndDiseaseService.UpdateDamageAndDisease(selected);
+
+                        }
+                            break;
+
+                    case "TreeId":
+                                Console.WriteLine("TreeId selected for update.");
+                                break;
+
+                            case "SpeciesId":
+                                Console.WriteLine("SpeciesId selected for update.");
+                                break;
+
+                            case "DamageAndDiseaseType":
+                                Console.WriteLine("DamageAndDiseaseType selected for update.");
+                                break;
+
+                            case "Symptom":
+                                Console.WriteLine("Symptom selected for update.");
+                                break;
+
+                            case "Severity":
+                                Console.WriteLine("Severity selected for update.");
+                                break;
+
+                            case "Reason":
+                                Console.WriteLine("Reason selected for update.");
+                                break;
+
+                            case "Spread":
+                                Console.WriteLine("Spread selected for update.");
+                                break;
+
+                            case "DateFirstObservation":
+                                Console.WriteLine("DateFirstObservation selected for update.");
+                                break;
+
+                            case "DateLastObservation":
+                                Console.WriteLine("DateLastObservation selected for update.");
+                                break;
+
+                            case "Note":
+                                Console.WriteLine("Note selected for update.");
+                                break;
+
+                            case "Exit":
+                                Console.WriteLine("Exiting update menu.");
+                                break;
+
+                            default:
+                                Console.WriteLine("Invalid selection.");
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No valid report was selected!");
+                        }
+                }
+            }
 
     private void DeleteDamageOrDiseaseReport()
     {

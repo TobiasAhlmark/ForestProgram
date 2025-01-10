@@ -14,7 +14,7 @@ public class DamageAndDiseaseService
 
     public OperationResult<DamageAndDisease> AddDamageAndDiseaseReportToForestArea(DamageAndDisease damageAndDisease)
     {
-        if(damageAndDisease == null)
+        if (damageAndDisease == null)
         {
             return new OperationResult<DamageAndDisease>
             {
@@ -45,7 +45,7 @@ public class DamageAndDiseaseService
         .Include(s => s.species)
         .ToList();
 
-        if(reportList == null)
+        if (reportList == null)
         {
             return new OperationResult<List<DamageAndDisease>>
             {
@@ -62,4 +62,38 @@ public class DamageAndDiseaseService
             Data = reportList
         };
     }
+
+    public OperationResult<DamageAndDisease> UpdateDamageAndDisease(DamageAndDisease damageAndDisease)
+    {
+        var update = _forestProgramDbContext.DamageAndDiseases
+        .FirstOrDefault(dmg => dmg.DamageAndDiseaseId == damageAndDisease.DamageAndDiseaseId);
+
+        if (update == null)
+        {
+            return new OperationResult<DamageAndDisease>
+            {
+                Success = false,
+                Message = "No report found!"
+            };
+        }
+        update.ForestAreaId = damageAndDisease.ForestAreaId;
+        update.TreeId = damageAndDisease.TreeId;
+        update.SpeciesId = damageAndDisease.SpeciesId;
+        update.DamageAndDiseaseType = damageAndDisease.DamageAndDiseaseType;
+        update.Symptom = damageAndDisease.Symptom;
+        update.Severity = damageAndDisease.Severity;
+        update.Reason = damageAndDisease.Reason;
+        update.Spread = damageAndDisease.Spread;
+        update.DateFirstObservation = damageAndDisease.DateFirstObservation;
+        update.DateLastObservation = damageAndDisease.DateLastObservation;
+        update.Note = damageAndDisease.Note;
+
+        return new OperationResult<DamageAndDisease>
+        {
+            Success = true,
+            Message = $"Report {update.DamageAndDiseaseId} Updated!",
+            Data = update
+        };
+    }
+
 }
