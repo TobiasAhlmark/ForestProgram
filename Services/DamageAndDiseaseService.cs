@@ -1,4 +1,5 @@
 using ForestProgram.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForestProgram.Services;
 
@@ -11,12 +12,7 @@ public class DamageAndDiseaseService
         _forestProgramDbContext = forestProgramDbContext;
     }
 
-    public void AddDamageAndDiseaseReport()
-    {
-
-    }
-
-    public OperationResult<DamageAndDisease> AddDamageAndDiseaseToForestArea(DamageAndDisease damageAndDisease)
+    public OperationResult<DamageAndDisease> AddDamageAndDiseaseReportToForestArea(DamageAndDisease damageAndDisease)
     {
         if(damageAndDisease == null)
         {
@@ -39,6 +35,31 @@ public class DamageAndDiseaseService
             Success = true,
             Message = $"Report number {damageAndDisease.DamageAndDiseaseId} added to {damageAndDisease.forestArea.Location}",
             Data = damageAndDisease
+        };
+    }
+
+    public OperationResult<List<DamageAndDisease>> GetAllDamageAndDiseaseReports()
+    {
+        var reportList = _forestProgramDbContext.DamageAndDiseases
+        .Include(f => f.forestArea)
+        .Include(s => s.species)
+        .ToList();
+
+        if(reportList == null)
+        {
+            return new OperationResult<List<DamageAndDisease>>
+            {
+                Success = false,
+                Message = "Could not find any reports!",
+                Data = reportList
+            };
+        }
+
+        return new OperationResult<List<DamageAndDisease>>
+        {
+            Success = true,
+            Message = "Reports found!",
+            Data = reportList
         };
     }
 }

@@ -89,6 +89,7 @@ public class EnviromentUI
         var handleSelectedArea = forestArea.Data
         .FirstOrDefault(f => $"{f.ForestAreaId} - {f.Location}" == selectedForestArea);
 
+        enviroment.forestArea = handleSelectedArea;
         enviroment.ForestAreaId = handleSelectedArea.ForestAreaId;
 
         string groundType = Utilities.GetString("Ground type: ", "Try again!");

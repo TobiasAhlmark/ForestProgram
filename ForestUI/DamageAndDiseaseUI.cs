@@ -156,8 +156,10 @@ public class DamageAndDiseaseUI
             DateLastObservation = dateLastObservation,
             Note = note
         };
+        damageAndDisease.species = handleSpecie;
+        damageAndDisease.forestArea = handleSelectedArea;
 
-        var result = _damageAndDiseaseService.AddDamageAndDiseaseToForestArea(damageAndDisease);
+        var result = _damageAndDiseaseService.AddDamageAndDiseaseReportToForestArea(damageAndDisease);
 
         if(result.Success)
         {
@@ -167,12 +169,30 @@ public class DamageAndDiseaseUI
         {
             Console.WriteLine(result.Message);
         }
-
+        Console.ReadKey();
     }
 
     private void ViewAllDamageAndDiseaseReports()
     {
-        // Implementation for viewing all reports
+        var result = _damageAndDiseaseService.GetAllDamageAndDiseaseReports();
+
+        if(!result.Success)
+        {
+            Console.WriteLine(result.Message);
+        }
+        else
+        {
+            foreach (var report in result.Data)
+            {
+                Console.WriteLine($"Report : {report.DamageAndDiseaseId} - Location: {report.forestArea.Location}");
+                Console.WriteLine($"Species: {report.species.Name} - Severity: {report.Severity}");
+                Console.WriteLine($"Type   : {report.DamageAndDiseaseType} - Symptom: {report.Symptom}");
+                Console.WriteLine($"Reason : {report.Reason} - Spread: {report.Spread}");
+                Console.WriteLine("First Observation: " + report.DateFirstObservation?.ToString("yyyy-MM-dd"));
+                Console.WriteLine("Last Observation : " + report.DateLastObservation?.ToString("yyyy-MM-dd"));
+            }
+        }
+        Console.ReadKey();
     }
 
     private void ViewSpecificDamageOrDiseaseReport()
