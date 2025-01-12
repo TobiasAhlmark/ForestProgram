@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using ForestProgram.Models;
 using ForestProgram.UI;
 
@@ -111,6 +112,41 @@ public class DamageRepairService
             Data = findReport
         };
 
+    }
+
+    public OperationResult<DamageRepair> UpDateFollowUp(DamageRepair damageRepair)
+    {
+        var repair = _forestProgramDbContext.DamageRepairs
+        .FirstOrDefault(r => r.DamageRepairId == damageRepair.DamageRepairId);
+
+        if(repair == null)
+        {
+            return new OperationResult<DamageRepair>
+            {
+                Success = false,
+                Message = "Could not find the report"
+            };
+        }
+
+        repair.FollowUp = damageRepair.FollowUp;
+        repair.Satus = damageRepair.Satus;
+        repair.Result = damageRepair.Result;
+
+        if (repair.DamageAndDisease != null)
+        {
+            var damageAndDisease = repair.DamageAndDisease;
+            damageAndDisease.Severity = "Resolved"; 
+            damageAndDisease.DateLastObservation = DateTime.Now;
+        }
+
+        _forestProgramDbContext.SaveChanges();
+
+        return new OperationResult<DamageRepair>
+        {
+            Success = true,
+            Message = "Follow-up successfully completed.",
+            Data = repair
+        };
     }
 
 }

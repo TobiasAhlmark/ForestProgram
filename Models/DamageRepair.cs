@@ -23,5 +23,5 @@ public class DamageRepair
 
     public string? Result { get; set; }
 
-    public DamageAndDisease damageAndDisease { get; set; }
+    public DamageAndDisease DamageAndDisease { get; set; }
 }

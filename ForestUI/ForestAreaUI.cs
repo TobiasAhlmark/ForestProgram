@@ -190,22 +190,47 @@ public class ForestAreaUI
 
             if (selectedForestAreaData != null)
             {
+                // Utskrift av information om ForestArea
                 Console.WriteLine($"Forest Area: {selectedForestAreaData.ForestAreaId} - {selectedForestAreaData.Location}");
 
+                // Om det finns miljödata eller skador och sjukdomar, skriv ut dem
                 if (selectedForestAreaData.Enviroments.Any() || selectedForestAreaData.DamageAndDiseases.Any())
                 {
-                    foreach (var env in selectedForestAreaData.Enviroments)
+                    if (selectedForestAreaData.Enviroments.Any())
                     {
-                        Console.WriteLine($"  Temperature: {env.Temperature}, Precipitation: {env.Precipitation}, Wind: {env.Wind}, Altitude: {env.Altitude}m");
+                        foreach (var env in selectedForestAreaData.Enviroments)
+                        {
+                            Console.WriteLine($"  Temperature: {env.Temperature}, Precipitation: {env.Precipitation}, Wind: {env.Wind} m/s, Altitude: {env.Altitude}m");
+                        }
                     }
-                    foreach (var dmg in selectedForestAreaData.DamageAndDiseases)
+                    else
                     {
-                        Console.WriteLine($"   Damage type: {dmg.DamageAndDiseaseType}, Symptom: {dmg.Symptom}, First observationdate {dmg.DateFirstObservation}");
+                        Console.WriteLine("  No environment data available.");
+                    }
+
+                    if (selectedForestAreaData.DamageAndDiseases.Any())
+                    {
+                        foreach (var dmg in selectedForestAreaData.DamageAndDiseases)
+                        {
+                            Console.WriteLine($"   Damage type: {dmg.DamageAndDiseaseType}, Symptom: {dmg.Symptom}, First observation date: {dmg.DateFirstObservation?.ToString("yyyy-MM-dd")}");
+                        }
+                    }
+
+                    if (selectedForestAreaData.RepairReports.Any())
+                    {
+                        foreach (var repair in selectedForestAreaData.RepairReports)
+                        {
+                            Console.WriteLine($"   Repair Report ID: {repair.DamageRepairId}, Action: {repair.Action}, Responsible: {repair.Responsible}, TimeSpan: {repair.TimeSpan}, Status: {repair.Satus}, Result: {repair.Result}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("  No repair reports available.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("  No environment data available.");
+                    Console.WriteLine("  No environment data or damage data available.");
                 }
             }
         }

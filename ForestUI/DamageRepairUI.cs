@@ -106,10 +106,10 @@ public class DamageRepairUI
             Resources = Utilities.GetString("Enter the resources needed: ", "Try again!"),
             Priority = Utilities.GetString("Enter priority (High/Medium/Low): ", "Try again!"),
             Satus = Utilities.GetString("Enter status (Open/Closed/In Progress): ", "Try again!"),
-            FollowUp = Utilities.GetString("Enter follow-up details: ", "Try again!"),
-            Result = Utilities.GetString("Enter result (if any): ", "Try again!")
+            FollowUp = "",
+            Result = ""
         };
-        newRepair.damageAndDisease = handleReport;
+        newRepair.DamageAndDisease = handleReport;
 
         var result = _damageRepairService.AddDamageRepair(newRepair);
 
@@ -141,12 +141,12 @@ public class DamageRepairUI
             Console.WriteLine($"Follow-Up: {report.FollowUp ?? "No follow-up details"}");
             Console.WriteLine($"Result: {report.Result ?? "No result specified"}");
 
-            if (report.damageAndDisease != null)
+            if (report.DamageAndDisease != null)
             {
                 Console.WriteLine("=== Associated Damage And Disease Details ===");
-                Console.WriteLine($"Damage/Disease Type: {report.damageAndDisease.DamageAndDiseaseType}");
-                Console.WriteLine($"Location: {report.damageAndDisease.forestArea?.Location ?? "Location not specified"}");
-                Console.WriteLine($"Description: {report.damageAndDisease.DamageAndDiseaseType ?? "No description of type"}");
+                Console.WriteLine($"Damage/Disease Type: {report.DamageAndDisease.DamageAndDiseaseType}");
+                Console.WriteLine($"Location: {report.DamageAndDisease.forestArea?.Location ?? "Location not specified"}");
+                Console.WriteLine($"Description: {report.DamageAndDisease.DamageAndDiseaseType ?? "No description of type"}");
             }
             else
             {
@@ -181,12 +181,12 @@ public class DamageRepairUI
             Console.WriteLine($"Follow-Up: {report.Data.FollowUp ?? "No follow-up details"}");
             Console.WriteLine($"Result: {report.Data.Result ?? "No result specified"}");
 
-            if (report.Data.damageAndDisease != null)
+            if (report.Data.DamageAndDisease != null)
             {
                 Console.WriteLine("=== Associated Damage And Disease Details ===");
-                Console.WriteLine($"Damage/Disease Type: {report.Data.damageAndDisease.DamageAndDiseaseType}");
-                Console.WriteLine($"Location: {report.Data.damageAndDisease.forestArea?.Location ?? "Location not specified"}");
-                Console.WriteLine($"Description: {report.Data.damageAndDisease.DamageAndDiseaseType ?? "No description of type"}");
+                Console.WriteLine($"Damage/Disease Type: {report.Data.DamageAndDisease.DamageAndDiseaseType}");
+                Console.WriteLine($"Location: {report.Data.DamageAndDisease.forestArea?.Location ?? "Location not specified"}");
+                Console.WriteLine($"Description: {report.Data.DamageAndDisease.DamageAndDiseaseType ?? "No description of type"}");
             }
             else
             {
@@ -358,9 +358,12 @@ public class DamageRepairUI
                         break;
 
                     case "FollowUp":
-                        Console.WriteLine($"Past info {selectedRepair.FollowUp}");
-                        string newFollowUp = Utilities.GetString("Enter new info: ", "Try again!");
+                        Console.WriteLine($"Past info {selectedRepair.FollowUp} - Status: {selectedRepair.Satus}");
+                        string newFollowUp = Utilities.GetString("Enter follow up info: ", "Try again!");
+                        string status = Utilities.GetString("Enter status (Open/Closed/In Progress): ", "Try again!");
                         selectedRepair.FollowUp = newFollowUp;
+                        selectedRepair.Satus = status;
+                        selectedRepair.Result = "Follow Up Completed";
 
                         var resultFollowUp = _damageRepairService.UpdateRepairReport(selectedRepair);
 
