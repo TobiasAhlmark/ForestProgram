@@ -16,5 +16,6 @@ public partial class ForestArea
 
     public string? EcoSystem { get; set; }
 
-    public ICollection<Enviroment> Enviroments { get; set; } = new List<Enviroment>();
+    public IEnumerable<Enviroment> Enviroments { get; set; }
+    public DamageAndDisease DamageAndDiseases { get; set;}
 }

@@ -553,7 +553,7 @@ public class TreeManagementUI
 
                     case "Action":
                         Console.WriteLine($"Past info {selectedTreeManagement.Action}");
-                        string action = Utilities.GetString("Enter updated actino: ", "Try Again!");
+                        string action = Utilities.GetString("Enter updated action: ", "Try Again!");
                         selectedTreeManagement.Action = action;
                         break;
 

@@ -6,6 +6,7 @@ public class ForestAreaWithEnviroments
 {
     public int ForestAreaId { get; set; }
     public string Location { get; set; }
-    public List<Enviroment> Enviroments { get; set; } = new List<Enviroment>();
-    public List<DamageAndDisease> DamageAndDiseases { get; internal set; }
+    public List<Enviroment> Enviroments { get; set; } 
+    public List<DamageAndDisease> DamageAndDiseases { get; set; }
+    public List<DamageRepair> RepairReports { get; set; }
 }

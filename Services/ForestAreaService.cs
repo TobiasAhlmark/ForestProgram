@@ -1,5 +1,4 @@
 
-using System.IO.Compression;
 using ForestProgram.Models;
 
 namespace ForestProgram.Services;
@@ -91,15 +90,19 @@ public class ForestAreaService
          .Select(fa => new ForestAreaWithEnviroments
          {
              ForestAreaId = fa.ForestAreaId,
-             Location = fa.Location,
+             
              // Hämta alla relaterade Enviroments för varje ForestArea
              Enviroments = _forestProgramContext.Enviroments
-                    .Where(e => e.ForestAreaId == fa.ForestAreaId)
-                    .ToList(),
-            // Hämta alla relaterade DamageAndDisease för varje ForestArea
+                .Where(e => e.ForestAreaId == fa.ForestAreaId)
+                .ToList(),
+             // Hämta alla relaterade DamageAndDisease för varje ForestArea
              DamageAndDiseases = _forestProgramContext.DamageAndDiseases
                 .Where(dd => dd.ForestAreaId == fa.ForestAreaId)
+                .ToList(),
+            RepairReports = _forestProgramContext.DamageRepairs
+                .Where(r => r.DamageAndDiseaseId == fa.DamageAndDiseases.DamageAndDiseaseId)
                 .ToList()
+  
          })
             .ToList(); // Gippy tack tack
 

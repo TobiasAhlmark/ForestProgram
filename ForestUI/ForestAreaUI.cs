@@ -94,20 +94,68 @@ public class ForestAreaUI
         {
             foreach (var forestArea in forestareas.Data)
             {
-                Console.WriteLine($"Forest Area: {forestArea.ForestAreaId} - {forestArea.Location}");
+                // Utskrift av grundläggande skogsarea information
+                Console.WriteLine($"=== Forest Area: {forestArea.ForestAreaId} ===");
+                Console.WriteLine($"Location: {forestArea.Location}");
 
+                // Utskrift av relaterad miljöinformation (Enviroments)
                 if (forestArea.Enviroments.Any())
                 {
+                    Console.WriteLine("  Environment Information:");
                     foreach (var env in forestArea.Enviroments)
                     {
-                        Console.WriteLine($"  Temperature: {env.Temperature}, Precipitation: {env.Precipitation}mm, Wind: {env.Wind} m/s, Altitude: {env.Altitude}m");
+                        Console.WriteLine($"    Temperature: {env.Temperature}°C, " +
+                                          $"Precipitation: {env.Precipitation} mm, " +
+                                          $"Wind: {env.Wind} m/s, " +
+                                          $"Altitude: {env.Altitude} m");
                     }
                 }
                 else
                 {
                     Console.WriteLine("  No environment data available.");
                 }
+
+                // Utskrift av relaterade skade- och sjukdomsrapporter (DamageAndDiseases)
+                if (forestArea.DamageAndDiseases.Any())
+                {
+                    Console.WriteLine("\n  Damage and Disease Reports:");
+                    foreach (var damageAndDisease in forestArea.DamageAndDiseases)
+                    {
+                        Console.WriteLine($"    Damage and Disease ID: {damageAndDisease.DamageAndDiseaseId}, " +
+                                          $"Type: {damageAndDisease.DamageAndDiseaseType}, " +
+                                          $"Severity: {damageAndDisease.Severity}, " +
+                                          $"Symptom: {damageAndDisease.Symptom}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("  No damage and disease reports available.");
+                }
+
+                // Utskrift av relaterade reparationsrapporter (RepairReports)
+                if (forestArea.RepairReports.Any())
+                {
+                    Console.WriteLine("\n  Repair Reports:");
+                    foreach (var repairReport in forestArea.RepairReports)
+                    {
+                        Console.WriteLine($"    Repair Report ID: {repairReport.DamageRepairId}, " +
+                                          $"Action: {repairReport.Action}, " +
+                                          $"Responsible: {repairReport.Responsible}, " +
+                                          $"Priority: {repairReport.Priority}, " +
+                                          $"Status: {repairReport.Satus}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("  No repair reports available.");
+                }
+
+                Console.WriteLine("\n-----------------------------------------------");
             }
+        }
+        else
+        {
+            Console.WriteLine("Could not retrieve forest area information.");
         }
     }
 
