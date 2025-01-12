@@ -258,41 +258,56 @@ public class DamageRepairUI
                     case "Action":
                         Console.WriteLine($"Past info {selectedRepair.Action}");
                         string newAction = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.Action = newAction;
+
+                        var result = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!result.Success)
+                        {
+                            Console.WriteLine(result.Message);
+                        }
                         break;
 
                     case "Responsible":
                         Console.WriteLine($"Past info {selectedRepair.Responsible}");
                         string newResponsible = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.Responsible = newResponsible;
                         break;
 
                     case "TimeSpan":
                         Console.WriteLine($"Past info {selectedRepair.TimeSpan}");
                         string newTimeSpan = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.TimeSpan = newTimeSpan;
                         break;
 
                     case "Resources":
                         Console.WriteLine($"Past info {selectedRepair.Resources}");
                         string newResources = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.Resources = newResources;
                         break;
 
                     case "Priority":
                         Console.WriteLine($"Past info {selectedRepair.Priority}");
                         string newPriority = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.Priority = newPriority;
                         break;
 
                     case "Satus":
                         Console.WriteLine($"Past info {selectedRepair.Satus}");
                         string newStatus = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.Satus = newStatus;
                         break;
 
                     case "FollowUp":
                         Console.WriteLine($"Past info {selectedRepair.FollowUp}");
                         string newFollowUp = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.FollowUp = newFollowUp;
                         break;
 
                     case "Result":
                         Console.WriteLine($"Past info {selectedRepair.Result}");
                         string newResult = Utilities.GetString("Enter new info: ", "Try again!");
+                        selectedRepair.Result = newResult;
                         break;
 
                     case "Exit":

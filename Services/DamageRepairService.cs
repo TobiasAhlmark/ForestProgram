@@ -17,7 +17,7 @@ public class DamageRepairService
         var addRepairReport = _forestProgramDbContext.DamageRepairs
         .FirstOrDefault(rep => rep.DamageRepairId == damageRepair.DamageRepairId);
 
-        if(addRepairReport != null)
+        if (addRepairReport != null)
         {
             return new OperationResult<DamageRepair>
             {
@@ -44,7 +44,7 @@ public class DamageRepairService
     {
         var repairList = _forestProgramDbContext.DamageRepairs.ToList();
 
-        if(repairList == null)
+        if (repairList == null)
         {
             return new OperationResult<List<DamageRepair>>
             {
@@ -65,7 +65,7 @@ public class DamageRepairService
         var specifikReport = _forestProgramDbContext.DamageRepairs
         .FirstOrDefault(sr => sr.DamageRepairId == id);
 
-        if(specifikReport == null)
+        if (specifikReport == null)
         {
             return new OperationResult<DamageRepair>
             {
@@ -80,6 +80,37 @@ public class DamageRepairService
             Message = "Succes!",
             Data = specifikReport
         };
+    }
+
+    public OperationResult<DamageRepair> UpdateRepairReport(DamageRepair damageRepair)
+    {
+        var findReport = _forestProgramDbContext.DamageRepairs
+        .FirstOrDefault(r => r.DamageRepairId == damageRepair.DamageRepairId);
+
+        if (findReport == null)
+        {
+            return new OperationResult<DamageRepair>
+            {
+                Success = false,
+                Message = "Could not update report",
+            };
+        }
+
+        findReport.Action = damageRepair.Action;
+        findReport.Responsible = damageRepair.Responsible;
+        findReport.TimeSpan = damageRepair.TimeSpan;
+        findReport.Resources = damageRepair.Resources;
+        findReport.Priority = damageRepair.Priority;
+        findReport.Satus = damageRepair.Satus;
+        findReport.FollowUp = damageRepair.FollowUp;
+        findReport.Result = damageRepair.Result;
+
+        return new OperationResult<DamageRepair>
+        {
+            Success = true,
+            Data = findReport
+        };
+
     }
 
 }

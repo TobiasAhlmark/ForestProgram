@@ -76,6 +76,7 @@ public class DamageAndDiseaseService
                 Message = "No report found!"
             };
         }
+        
         update.ForestAreaId = damageAndDisease.ForestAreaId;
         update.TreeId = damageAndDisease.TreeId;
         update.SpeciesId = damageAndDisease.SpeciesId;
