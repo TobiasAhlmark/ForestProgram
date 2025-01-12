@@ -260,11 +260,15 @@ public class DamageRepairUI
                         string newAction = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.Action = newAction;
 
-                        var result = _damageRepairService.UpdateRepairReport(selectedRepair);
+                        var resultAction = _damageRepairService.UpdateRepairReport(selectedRepair);
 
-                        if(!result.Success)
+                        if(!resultAction.Success)
                         {
-                            Console.WriteLine(result.Message);
+                            Console.WriteLine(resultAction.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultAction.Data.DamageRepairId} Updated!");
                         }
                         break;
 
@@ -272,42 +276,119 @@ public class DamageRepairUI
                         Console.WriteLine($"Past info {selectedRepair.Responsible}");
                         string newResponsible = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.Responsible = newResponsible;
+
+                        var resultResponsible = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!resultResponsible.Success)
+                        {
+                            Console.WriteLine(resultResponsible.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultResponsible.Data.DamageRepairId} Updated!");
+                        }
                         break;
 
                     case "TimeSpan":
                         Console.WriteLine($"Past info {selectedRepair.TimeSpan}");
                         string newTimeSpan = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.TimeSpan = newTimeSpan;
+
+                        var resultTimeSpan = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!resultTimeSpan.Success)
+                        {
+                            Console.WriteLine(resultTimeSpan.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultTimeSpan.Data.DamageRepairId} Updated!");
+                        }
                         break;
 
                     case "Resources":
                         Console.WriteLine($"Past info {selectedRepair.Resources}");
                         string newResources = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.Resources = newResources;
+
+                        var resultResources = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!resultResources.Success)
+                        {
+                            Console.WriteLine(resultResources.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultResources.Data.DamageRepairId} Updated!");
+                        }
                         break;
 
                     case "Priority":
                         Console.WriteLine($"Past info {selectedRepair.Priority}");
                         string newPriority = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.Priority = newPriority;
+
+                        var resultPriority = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!resultPriority.Success)
+                        {
+                            Console.WriteLine(resultPriority.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultPriority.Data.DamageRepairId} Updated!");
+                        }
                         break;
 
                     case "Satus":
                         Console.WriteLine($"Past info {selectedRepair.Satus}");
                         string newStatus = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.Satus = newStatus;
+
+                        var resultStatus = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!resultStatus.Success)
+                        {
+                            Console.WriteLine(resultStatus.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultStatus.Data.DamageRepairId} Updated!");
+                        }
                         break;
 
                     case "FollowUp":
                         Console.WriteLine($"Past info {selectedRepair.FollowUp}");
                         string newFollowUp = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.FollowUp = newFollowUp;
+
+                        var resultFollowUp = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!resultFollowUp.Success)
+                        {
+                            Console.WriteLine(resultFollowUp.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultFollowUp.Data.DamageRepairId} Updated!");
+                        }
                         break;
 
                     case "Result":
                         Console.WriteLine($"Past info {selectedRepair.Result}");
                         string newResult = Utilities.GetString("Enter new info: ", "Try again!");
                         selectedRepair.Result = newResult;
+
+                        var resultResult = _damageRepairService.UpdateRepairReport(selectedRepair);
+
+                        if(!resultResult.Success)
+                        {
+                            Console.WriteLine(resultResult.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Repair report ID: {resultResult.Data.DamageRepairId} Updated!");
+                        }
                         break;
 
                     case "Exit":
