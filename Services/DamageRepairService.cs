@@ -39,4 +39,47 @@ public class DamageRepairService
             };
         }
     }
+
+    public OperationResult<List<DamageRepair>> GetAllRepairReports()
+    {
+        var repairList = _forestProgramDbContext.DamageRepairs.ToList();
+
+        if(repairList == null)
+        {
+            return new OperationResult<List<DamageRepair>>
+            {
+                Success = false,
+                Message = "No repair reports found!",
+            };
+        }
+        return new OperationResult<List<DamageRepair>>
+        {
+            Success = true,
+            Message = "",
+            Data = repairList
+        };
+    }
+
+    public OperationResult<DamageRepair> GetSpecifikRepairReportById(int id)
+    {
+        var specifikReport = _forestProgramDbContext.DamageRepairs
+        .FirstOrDefault(sr => sr.DamageRepairId == id);
+
+        if(specifikReport == null)
+        {
+            return new OperationResult<DamageRepair>
+            {
+                Success = false,
+                Message = "Could not find any report with that id"
+            };
+        }
+
+        return new OperationResult<DamageRepair>
+        {
+            Success = true,
+            Message = "Succes!",
+            Data = specifikReport
+        };
+    }
+
 }

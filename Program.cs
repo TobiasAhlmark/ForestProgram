@@ -28,6 +28,7 @@ internal class Program
         serviceCollection.AddSingleton<SpeciesService>();
         serviceCollection.AddSingleton<EnviromentService>();
         serviceCollection.AddSingleton<DamageAndDiseaseService>();
+        serviceCollection.AddSingleton<DamageRepairService>();
 
         // Bygg ServiceProvider
         var serviceProvider = serviceCollection.BuildServiceProvider();
