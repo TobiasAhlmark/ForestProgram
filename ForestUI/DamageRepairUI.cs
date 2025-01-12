@@ -199,7 +199,116 @@ public class DamageRepairUI
 
     private void UpdateDamageRepair()
     {
-        AnsiConsole.MarkupLine("[cyan]Update Damage Repair functionality goes here.[/]");
+        var damageRepairs = _damageRepairService.GetAllRepairReports();
+
+        if (!damageRepairs.Success)
+        {
+            Console.WriteLine(damageRepairs.Message);
+        }
+        else
+        {
+            var options = damageRepairs.Data
+                .Select(dmg => $"Repair ID: {dmg.DamageRepairId} Associated Report ID: {dmg.DamageAndDiseaseId}")
+                .ToList();
+
+            options.Add("Exit");
+
+            var selectedOption = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Select a damage repair to update")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                    .AddChoices(options)
+            );
+
+            if (selectedOption.Equals("Exit", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Exiting...");
+                return;
+            }
+
+            var selectedRepair = damageRepairs.Data
+                .FirstOrDefault(r => $"Repair ID: {r.DamageRepairId} Associated Report ID: {r.DamageAndDiseaseId}" == selectedOption);
+
+            if (selectedRepair != null)
+            {
+                var fields = new List<string>
+                {
+                    "Action",
+                    "Responsible",
+                    "TimeSpan",
+                    "Resources",
+                    "Priority",
+                    "Satus",
+                    "FollowUp",
+                    "Result",
+                    "Exit"
+                };
+
+                var selectedField = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("Select a field to update")
+                        .PageSize(10)
+                        .MoreChoicesText("[grey](Use arrow keys to select)[/]")
+                        .AddChoices(fields)
+                    );
+
+                switch (selectedField)
+                {
+                    case "Action":
+                        Console.WriteLine($"Past info {selectedRepair.Action}");
+                        string newAction = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "Responsible":
+                        Console.WriteLine($"Past info {selectedRepair.Responsible}");
+                        string newResponsible = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "TimeSpan":
+                        Console.WriteLine($"Past info {selectedRepair.TimeSpan}");
+                        string newTimeSpan = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "Resources":
+                        Console.WriteLine($"Past info {selectedRepair.Resources}");
+                        string newResources = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "Priority":
+                        Console.WriteLine($"Past info {selectedRepair.Priority}");
+                        string newPriority = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "Satus":
+                        Console.WriteLine($"Past info {selectedRepair.Satus}");
+                        string newStatus = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "FollowUp":
+                        Console.WriteLine($"Past info {selectedRepair.FollowUp}");
+                        string newFollowUp = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "Result":
+                        Console.WriteLine($"Past info {selectedRepair.Result}");
+                        string newResult = Utilities.GetString("Enter new info: ", "Try again!");
+                        break;
+
+                    case "Exit":
+                        Console.WriteLine("Exiting...");
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid option selected.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No matching repair found.");
+            }
+        }
     }
 
 }
