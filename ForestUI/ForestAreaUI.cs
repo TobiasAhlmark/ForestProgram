@@ -188,6 +188,7 @@ public class ForestAreaUI
             var selectedForestAreaData = forestArea.Data
             .FirstOrDefault(fa => $"ID: {fa.ForestAreaId} - {fa.Location}" == selectedForestArea);
 
+
             if (selectedForestAreaData != null)
             {
                 // Utskrift av information om ForestArea

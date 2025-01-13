@@ -91,21 +91,23 @@ public class ForestAreaService
          {
              ForestAreaId = fa.ForestAreaId,
              Location = fa.Location,
-             
+
              // Hämta alla relaterade Enviroments för varje ForestArea
-            Enviroments = _forestProgramContext.Enviroments
+             Enviroments = _forestProgramContext.Enviroments
                 .Where(e => e.ForestAreaId == fa.ForestAreaId)
                 .ToList(),
              // Hämta alla relaterade DamageAndDisease för varje ForestArea
-            DamageAndDiseases = _forestProgramContext.DamageAndDiseases
+             DamageAndDiseases = _forestProgramContext.DamageAndDiseases
                 .Where(dd => dd.ForestAreaId == fa.ForestAreaId)
                 .ToList(),
-            RepairReports = _forestProgramContext.DamageRepairs
+             RepairReports = _forestProgramContext.DamageRepairs
                 .Where(r => r.DamageAndDiseaseId == fa.DamageAndDiseases.DamageAndDiseaseId)
                 .ToList()
-  
+
          })
-            .ToList(); // Gippy tack tack
+            .GroupBy(fa => fa.ForestAreaId) // Gruppera efter ID
+            .Select(g => g.First()) // Ta endast en instans per grupp
+            .ToList();
 
         if (getAreasAndEnviroment == null)
         {
