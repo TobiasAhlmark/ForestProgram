@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using ForestProgram.Models;
 using ForestProgram.UI;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForestProgram.Services;
 
@@ -106,6 +107,8 @@ public class DamageRepairService
         findReport.FollowUp = damageRepair.FollowUp;
         findReport.Result = damageRepair.Result;
 
+        _forestProgramDbContext.SaveChanges();
+
         return new OperationResult<DamageRepair>
         {
             Success = true,
@@ -117,6 +120,7 @@ public class DamageRepairService
     public OperationResult<DamageRepair> UpDateFollowUp(DamageRepair damageRepair)
     {
         var repair = _forestProgramDbContext.DamageRepairs
+        .Include(r => r.DamageAndDisease)
         .FirstOrDefault(r => r.DamageRepairId == damageRepair.DamageRepairId);
 
         if(repair == null)

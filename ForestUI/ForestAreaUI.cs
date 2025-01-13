@@ -213,7 +213,7 @@ public class ForestAreaUI
                     {
                         foreach (var dmg in selectedForestAreaData.DamageAndDiseases)
                         {
-                            Console.WriteLine($"   Damage type: {dmg.DamageAndDiseaseType}, Symptom: {dmg.Symptom}, First observation date: {dmg.DateFirstObservation?.ToString("yyyy-MM-dd")}");
+                            Console.WriteLine($"   Damage and Disease report ID: {dmg.DamageAndDiseaseId}, Damage type: {dmg.DamageAndDiseaseType}, Symptom: {dmg.Symptom}, First observation date: {dmg.DateFirstObservation?.ToString("yyyy-MM-dd")}");
                         }
                     }
 
@@ -221,7 +221,14 @@ public class ForestAreaUI
                     {
                         foreach (var repair in selectedForestAreaData.RepairReports)
                         {
-                            Console.WriteLine($"   Repair Report ID: {repair.DamageRepairId}, Action: {repair.Action}, Responsible: {repair.Responsible}, TimeSpan: {repair.TimeSpan}, Status: {repair.Satus}, Result: {repair.Result}");
+                            if(repair.Result == "Follow Up Completed")
+                            {
+                                Console.WriteLine($"   Result: {repair.Result} - Status: {repair.Satus}");
+                            }
+                            else
+                            {
+                            Console.WriteLine($"   Repair Report ID: {repair.DamageRepairId} -> Damage Report ID: {repair.DamageAndDiseaseId} Action: {repair.Action}, Responsible: {repair.Responsible}, TimeSpan: {repair.TimeSpan}, Status: {repair.Satus}, Result: {repair.Result}");
+                            }
                         }
                     }
                     else

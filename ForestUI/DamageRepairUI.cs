@@ -365,7 +365,7 @@ public class DamageRepairUI
                         selectedRepair.Satus = status;
                         selectedRepair.Result = "Follow Up Completed";
 
-                        var resultFollowUp = _damageRepairService.UpdateRepairReport(selectedRepair);
+                        var resultFollowUp = _damageRepairService.UpDateFollowUp(selectedRepair);
 
                         if(!resultFollowUp.Success)
                         {

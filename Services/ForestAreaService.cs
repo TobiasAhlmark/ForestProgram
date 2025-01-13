@@ -91,12 +91,10 @@ public class ForestAreaService
          {
              ForestAreaId = fa.ForestAreaId,
              Location = fa.Location,
-
-             // Hämta alla relaterade Enviroments för varje ForestArea
+             
              Enviroments = _forestProgramContext.Enviroments
                 .Where(e => e.ForestAreaId == fa.ForestAreaId)
                 .ToList(),
-             // Hämta alla relaterade DamageAndDisease för varje ForestArea
              DamageAndDiseases = _forestProgramContext.DamageAndDiseases
                 .Where(dd => dd.ForestAreaId == fa.ForestAreaId)
                 .ToList(),
